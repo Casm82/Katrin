@@ -1,0 +1,68 @@
+body { margin: 0; }
+a {
+  text-decoration: none;
+  color: black;
+}
+
+nav {
+  top: 0;
+  bottom: 0;
+  right: 2em;
+  position: fixed;
+  margin: auto;
+  z-index: 10;
+  height: 8em;
+}
+
+
+nav td { text-align: right; }
+
+nav input[type="radio"] {
+  vertical-align: middle;
+}
+
+nav input[type="radio"] {
+  margin: 0;
+}
+
+.navItem {
+  font-variant: small-caps;
+  cursor: pointer;
+/*  display: none;*/
+}
+
+#main {
+  background-image: linear-gradient(to right, #fbebdb, #e5f4fb);
+  width: 100%;
+  height: 500px;
+}
+
+#services {
+  background-image: linear-gradient(to right, #fbebdb, #e5f4fb);
+  width: 100%;
+  height: 500px;
+}
+
+#masters {
+  background-image: url(/images/wall_bricks.jpg);
+  width: 100%;
+  height: 500px;
+}
+
+#goods {
+  background-image: url(/images/goods.png);
+  width: 100%;
+  height: 500px;
+}
+
+#contacts {
+  background-image: url(/images/wall_circles.jpg);
+  width: 100%;
+  height: 500px;
+}
+
+#logoDiv {
+  position: absolute;
+  left: 100px;
+  top:  100px;
+}
