@@ -61,8 +61,41 @@ nav input[type="radio"] {
   height: 500px;
 }
 
-#logoDiv {
+#headComposition {
+  position: relative;
+  margin: 0 auto;
+  width: 80%;
+}
+
+#logo{
   position: absolute;
-  left: 100px;
-  top:  100px;
+  right: 7em;
+  top:  3em;
+}
+
+#signboard {
+  position: relative;
+  top: 9em;
+  left: 7em;
+  width: 50%;
+  margin: 0 auto;
+}
+
+#nameTxt{
+  font-family: open sans condensed,sans-serif;
+  font-size: 45px;
+  font-variant: small-caps;
+  text-shadow: 5px 5px 2px grey;
+  position: absolute;
+  top: 1.25em;
+  left: 1.85em;
+  z-index: 2;
+}
+
+#nameFrame {
+  background: white;
+  width: 20em;
+  height: 10em;
+  filter: opacity(0.85) blur(10px);;
+
 }
