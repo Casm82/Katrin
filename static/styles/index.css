@@ -125,6 +125,28 @@ nav input[type="radio"] {
 #about { width: 10em; }
 #about:hover { background-color: white; }
 
+#aboutTxt {
+  background-color: white;
+  border: 2px solid #FAB89D;
+  border-radius: 4px;
+  font-family: sans-serif;
+  font-size: 1.15em;
+  margin: 0 auto;
+  padding: 1em 2em;
+  position: fixed;
+  top: 20%;
+  left: calc((100% - 700px)/2);
+  z-index: 3;
+  text-align: justify;
+  width: 700px;
+}
+
+#aboutClose {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 #book { width: 15em; }
 #book:hover { background-color: white; }
 
