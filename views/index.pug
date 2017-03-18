@@ -4,43 +4,44 @@ html
     meta(charset="utf-8")
     title= title
     link(rel='stylesheet', href='/styles/index.css')
+    script(src="/scripts/index.js")
   body
     nav
       table
         tr
-          td.navItem(data-nav="main") Главная
+          td.navText(data-nav="main") Главная
           td
-            input(type="radio" name="positon" value="main" checked="checked")
+            input(type="radio" name="navRadio" data-nav="main")
         tr
-          td.navItem(data-nav="services") Услуги
+          td.navText(data-nav="services") Услуги
           td
-            input(type="radio" name="positon" value="services")
+            input(type="radio" name="navRadio" value="services" data-nav="services")
         tr
-          td.navItem(data-nav="masters") Мастера
+          td.navText(data-nav="masters") Мастера
           td
-            input(type="radio" name="positon" value="masters")
+            input(type="radio" name="navRadio" value="masters" data-nav="masters")
         tr
-          td.navItem(data-nav="reviews") Отзывы
+          td.navText(data-nav="reviews") Отзывы
           td
-            input(type="radio" name="positon" value="reviews")
+            input(type="radio" name="navRadio" value="reviews" data-nav="reviews")
         tr
-          td.navItem(data-nav="goods") Товары
+          td.navText(data-nav="goods") Товары
           td
-            input(type="radio" name="positon" value="goods")
+            input(type="radio" name="navRadio" value="goods" data-nav="goods")
         tr
-          td.navItem(data-nav="contacts") Контакты
+          td.navText(data-nav="contacts") Контакты
           td
-            input(type="radio" name="positon" value="contacts")
+            input(type="radio" name="navRadio" value="contacts" data-nav="contacts")
     header#main
-      div#headComposition
+      div#headerCenter
         div#logo
           img(src="/images/logo.png" alt="логотип")
         div#signboard
           div#nameTxt Кэтрин
           div#nameFrame
         div#buttons
-          div#about О нас
-          div#aboutTxt
+          div#aboutShow О нас
+          div#aboutTxt.invisible
             div#aboutClose
               img(src="/images/close.png" alt="Закрыть")
             div

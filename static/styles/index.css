@@ -24,10 +24,31 @@ nav input[type="radio"] {
   margin: 0;
 }
 
-.navItem {
+.navText {
   font-variant: small-caps;
   cursor: pointer;
-/*  display: none;*/
+}
+
+.navText:hover {
+  opacity: 1;
+}
+
+.invisible {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.5s linear;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.5s, opacity 0.5s linear;
+}
+
+#headerCenter{
+  position: relative;
+  width: 980px;
+  margin: 0 auto;
 }
 
 #main {
@@ -110,7 +131,7 @@ nav input[type="radio"] {
   top: 10em;
 }
 
-#about, #book {
+#aboutShow, #book {
   border: 2px solid #FAB89D;
   border-radius: 4px;
   color: #E97B4E;
@@ -120,10 +141,11 @@ nav input[type="radio"] {
   font-weight: bold;
   padding: 0.25em;
   margin: 1em auto;
+  cursor: pointer;
 }
 
-#about { width: 10em; }
-#about:hover { background-color: white; }
+#aboutShow { width: 10em; }
+#aboutShow:hover { background-color: white; }
 
 #aboutTxt {
   background-color: white;
@@ -145,6 +167,14 @@ nav input[type="radio"] {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+#aboutClose img {
+  transition: transform 0.75s ease-in-out;
+}
+
+#aboutClose img:hover {
+  transform: rotate(360deg);
 }
 
 #book { width: 15em; }
