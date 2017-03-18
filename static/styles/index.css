@@ -39,18 +39,19 @@ nav input[type="radio"] {
 #services {
   background-image: linear-gradient(to right, #fbebdb, #e5f4fb);
   width: 100%;
-  height: 30em;
+  height: 35em;
 }
 
 #masters {
   background-image: url(/images/wall_bricks.jpg);
   width: 100%;
-  height: 30em;
+  height: 48em;
   padding-top: 2em;
 }
 
 #goods {
   background-image: url(/images/goods.png);
+  background-color: #FAEECD;
   width: 100%;
   height: 500px;
 }
@@ -107,9 +108,11 @@ nav input[type="radio"] {
 #about, #book {
   border: 2px solid #FAB89D;
   border-radius: 4px;
-  color: #FAB89D;
+  color: #E97B4E;
   text-shadow: 1px 1px 1px white;
   text-align: center;
+  font-size: 1.15em;
+  font-weight: bold;
   padding: 0.25em;
   margin: 1em auto;
 }
@@ -144,12 +147,17 @@ nav input[type="radio"] {
 }
 
 .sericePink, .sericeBlack {
-  font-family: open sans condensed,sans-serif;
+  font-family: sans-serif;
   font-size: 40px;
   font-variant: small-caps;
   text-align: center;
   vertical-align: middle;
   line-height: 235px;
+}
+
+.masterRow {
+  margin-bottom: 2em;
+  height: 220px;
 }
 
 .leftCell  { float: left; }
@@ -158,34 +166,92 @@ nav input[type="radio"] {
 .masterCell > div, .masterCell > div {
   width: 220px;
   height: 220px;
-  text-align: center;
-  vertical-align: middle;
   float: left;
   background-color: #FAB89D;
+}
+
+.masterDescription {
+  position: relative;
+  text-align: center;
 }
 
 .masterName {
   position: relative;
   top: 2em;
-  left: calc((220px - 13em)/2);
+  font-size: 1.5em;
+  font-variant: small-caps;
 }
 
-.hr {
+.masterHr {
   border: 1px solid black;
   width: 75px;
-  margin: 1em auto;
-  position: relative;
-  top: 3em;
-}
-
-.masterTitle {
-  left: calc((220px - 13em)/2);
+  margin: 0 auto;
   position: relative;
   top: 4em;
 }
 
-.masterGalery {
+.masterTitle {
   position: relative;
+  top: 5em;
+}
+
+.masterGalery {
+  position: absolute;
   bottom: 1em;
   left: calc((220px - 6em)/2);
+  font-style: italic;
+}
+
+#reviewsTable, #goodsTable {
+  width: 980px;
+  background: inherit;
+  margin: 0 auto;
+  text-align: center;
+  border-spacing: 1em 0;
+  font-family: sans-serif;
+  font-size: 1.15em;
+}
+
+.title {
+  font-size: 45px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-variant: small-caps;
+  text-shadow: 5px 5px 2px grey;
+}
+
+#reviewsTable td {
+  vertical-align: top;
+}
+
+#feedback {
+  border-radius: 4px;
+  background-color: #FAB89D;
+  color:  white;
+  width: 20em;
+  margin: 1em auto;
+  padding: 0.5em;
+  text-shadow: 1px 1px 1px black;
+  text-align: center;
+  font-size: 1.25em;
+  font-weight: bold;
+  font-style: italic;
+}
+
+#feedback:hover {
+  background-color: grey;
+  color: #FAB89D;
+}
+
+#goodsTable {
+  border-spacing: 1em 0;
+}
+
+#goodsTable th {
+  text-shadow: 1px 1px 1px black;
+  font-variant: small-caps;
+  font-size: 45px;
+  font-style: italic;
+  background-color: white;
+  height: 3em;
 }
