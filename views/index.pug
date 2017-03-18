@@ -134,9 +134,43 @@ html
           th Kapous
         tr
           td
-            strong Ольга Смирнова
+            img(src="/images/goods_organic.jpg")
           td
-            strong Анна Петрова
+            img(src="/images/goods_matrix.jpg")
           td
-            strong Елена Иванова
+            img(src="/images/goods_organic.jpg")
     footer#contacts
+      div#address
+        div.title Приходите
+        p р-н Наговицынский, д.4, г. Можга, Россия
+        p
+          a(href="mailto:katrin@yandex.ru") katrin@yandex.ru
+        div +7 (912) 006 53 50
+        div +7 (950) 833 15 05
+        p ЧАСЫ РАБОТЫ
+        div ПН—ПТ : 10:00—19:00
+        div СБ—ВС : 10:00–17:00
+        div#questionForm Задать вопрос
+          div#questionInput
+            div#questionSender
+              div
+                input(type="text" name="name" placeholder="Имя")
+              div
+                input(type="email" name="email" placeholder="E-mail")
+              div
+                input(type="tel" name="tel" placeholder="Телефон")
+            div#questionMessage
+              textarea(name="message" placeholder="Сообщение")
+          input#submitQuestion(type="submit" value="Отправить")
+
+      div#socialLinksArea
+        div#socialLinksImg
+          a(href="https://vk.com")
+            img(src="/images/logo_vk.png")
+          a(href="https://facebook.com")
+            img(src="/images/logo_f.png")
+          a(href="https://www.instagram.com/")
+            img(src="/images/logo_inst.png")
+        div#service
+          a(href="/service")
+            img(src="/images/service.png")
