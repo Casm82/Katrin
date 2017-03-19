@@ -1,362 +1,83 @@
 section {
   background-image: url(/images/wall_goods.png);
   background-color: #FAEECD;
-}
-#board {
-  background-color: white;
-  height: 50em;
-}
-#board, #service{
-  margin: 0 auto;
-  width: 980px;
-}
-#service {
-  text-align: center;
-}
-#service span {
-  margin: 0 2em;
-}
-body {
-  background: #eee;
   font-family: Verdana, Tahoma, Arial;
   text-align: center;
 }
-a {
-    color: #c00;                           /* украшательство */
-    font-weight: bold;                     /* украшательство */
-    text-decoration: underline;            /* украшательство */
+
+#board {
+  background-color: white;
+  height: 45em;
+  background-image: url(/images/wall_services.png);
 }
-a:hover {
-    text-decoration: none;                 /* украшательство */
+
+#board {
+  margin: 0 auto;
+  width: 980px;
 }
-/* ==================== КОНТЕНТ: левая выпадающая панель ==================== */
-#left {
-    position: absolute;                    /* панель будем позиционировать                      */
-    right: 50%;                            /* двигаем на центр и оталкивается справа налево     */
-    margin-right: 240px;                   /* отодвигаем влево за слайдер (половина его ширины) */
-    overflow: hidden;                      /* выступающие части контента отсекаем               */
-    background: #ddd;                      /* украшательство */
-    border: #ccc 1px solid;                /* украшательство */
-    border-right: none;                    /* украшательство */
-    margin-top: 15px;                      /* украшательство */
-    width: 25px;                           /* украшательство */
-    min-height: 250px;                     /* украшательство */
-    text-align: left;                      /* украшательство */
-}
-#left > div {
-    display: none;                     /* контент панели изначально скрыт */
-    margin-top: 25px;                  /* украшательство */
-    padding: 15px;                     /* украшательство */
-}
-/* ==================== КОНТЕНТ: правая выпадающая панель ==================== */
-#right {
-    position: absolute;                    /* панель будем позиционировать                       */
-    left: 50%;                             /* двигаем на центр и оталкивается слева направо      */
-    margin-left: 240px;                    /* отодвигаем вправо за слайдер (половина его ширины) */
-    overflow: hidden;                      /* выступающие части контента отсекаем                */
-    background: #ddd;                      /* украшательство */
-    border: #ccc 1px solid;                /* украшательство */
-    border-left: none;                     /* украшательство */
-    margin-top: 15px;                      /* украшательство */
-    width: 25px;                           /* украшательство */
-    min-height: 250px;                     /* украшательство */
-    text-align: left;                      /* украшательство */
-}
-#right > div {
-    display: none;                     /* контент панели изначально скрыт */
-    margin-top: 25px;                  /* украшательство */
-    padding: 15px;                     /* украшательство */
-}
-/* ==================== КОНТЕНТ: слайдер ==================== */
+
+/* КОНТЕНТ: слайдер */
 #slider {
-    width: 480px;                          /* ширина слайда + боковые отступы личных украшательств */
-    background: #ddd;                      /* украшательство */
-    border: #fff 10px solid;               /* украшательство */
-    margin: 15px auto;                     /* украшательство */
-    padding: 15px;                         /* украшательство */
-    text-align: left;                      /* украшательство */
+  text-align: left;
 }
+
 /* контейнер набора слайдов */
 #slider .elements {
-    height: 240px;                     /* высота слайда (если низ не должен плавать)   */
-    overflow: hidden;                  /* отсекаем выступившее за край                 */
-    position: relative;                /* слайды позиционируем относительно контейнера */
-    background: #fff;                  /* украшательство */
-    margin: 15px 0;                    /* украшательство */
+  position: relative;
 }
+
 /* контейнер отдельного слайда */
 #slider .element {
-    display: none;                     /* слайды изначально не видны                */
-    height: 100%;                      /* слайды размером на всю клиентскую область */
-    width: 100%;                       /* слайды размером на всю клиентскую область */
-    position: absolute;                /* слайды размещены один над другим          */
-    padding: 15px;                     /* украшательство */
+  display: none;                     /* слайды изначально не видны                */
+  height: 100%;                      /* слайды размером на всю клиентскую область */
+  width: 100%;                       /* слайды размером на всю клиентскую область */
+  position: absolute;                /* слайды размещены один над другим          */
+  padding: 15px;
 }
-/* ==================== КОНТЕНТ: сами слайды ==================== */
-#slider .SlideBox1 {
-    background: #f88;                      /* украшательство */
+
+.element table {
+  margin: 0 auto;
+  border-spacing: 1em 0.5em;
 }
-#slider .SlideBox2 {
-    background: #6cf;                      /* украшательство */
-}
-#slider .SlideBox3 {
-    background: #8f8;                      /* украшательство */
-}
-#slider .SlideBox4 {
-    background: #fc6;                      /* украшательство */
-}
-/* ==================== КОНТЕНТ: строка состояния слайдера ==================== */
-#slider .status {
-    background: #bbb;                      /* украшательство */
-    color: #444;                           /* украшательство */
-    font-size: 8pt;                        /* украшательство */
-    line-height: 20px;                     /* украшательство */
-    margin-bottom: 15px;                   /* украшательство */
-    padding: 0 10px;                       /* украшательство */
-}
-#slider .status span {
-    color: #c4c;                       /* украшательство */
-    padding-right: 10px;               /* украшательство */
-}
-/* ==================== КОНТЕНТ: спойлер под слайдером ==================== */
-#slider .more {
-    display: none;                         /* контент спойлера изначально скрыт */
-    background: #eee;                      /* украшательство */
-    border: #bbb 1px solid;                /* украшательство */
-    margin-top: 15px;                      /* украшательство */
-    padding: 15px;                         /* украшательство */
-}
-/* ==================== КОНТЕНТ: уведомления по событию ==================== */
-.cases {
-    display: none;                         /* изначально скрыты */
-}
-.cases.visible {
-    display: block;                        /* такие изначально видны */
-}
-.cases.visible.inline {                    /* возможно для каких-нибудь частей текста */
-    display: inline;
-}
-/* раскрасим текст уведомлений */
-.NonSelected {
-    color: #080;                           /* украшательство */
-    line-height: 20px;                     /* украшательство */
-}
-/* ==================== НАВИГАТОРЫ: теневые флажки ==================== */
+
+/* НАВИГАТОРЫ: теневые флажки */
 input[name^="shadow-"] {
-    display: none;                         /* вообще не показываем */
+  display: none;
 }
-/* ==================== НАВИГАТОРЫ: флажок ==================== */
-.checkbox {
-    cursor: pointer;                       /* украшательство */
-}
-/* ==================== ОБРАБОТКИ ОБЩИЕ: события флажка ==================== */
-/* его общие события не отслеживаем */
-/* ==================== НАВИГАТОРЫ: тумблер ==================== */
-.switch {
-    position: absolute;                    /* будем позиционировать как и панель                       */
-    right: 50%;                            /* двигаем на центр                                         */
-    margin-right: 240px;                   /* отодвигаем влево за слайдер (половина его ширины)        */
-    z-index: 1;                            /* чтобы оказался над панелью                               */
-    display: block;                        /* чтобы не терялась позиция от скрытия неблочных элементов */
-    cursor: pointer;                       /* украшательство */
-    margin-top: 15px;                      /* украшательство */
-}
-.switch:after {
-    content: '←';                          /* украшательство */
-    background: #bbb;                      /* украшательство */
-    display: inline-block;                 /* украшательство */
-    font-size: 12pt;                       /* украшательство */
-    font-weight: bold;                     /* украшательство */
-    text-align: center;                    /* украшательство */
-    line-height: 25px;                     /* украшательство */
-    height: 25px;                          /* украшательство */
-    width: 25px;                           /* украшательство */
-}
-.switch:hover:after {
-    background: #8ff;                      /* украшательство */
-}
-/* корректируем для правой панели */
-.switch.RightKey1 {
-    right: none;
-    left: 50%;
-    margin-right: 0;
-    margin-left: 240px;
-}
-.switch.RightKey1:after {
-    content: '→';                      /* украшательство */
-}
-/* ==================== ОБРАБОТКИ ОБЩИЕ: события тумблера ==================== */
-/* включен */
-input[name^="shadow-"]:checked + .switch:after {
-    content: '→';                          /* украшательство */
-}
-/* включен (для правой панели) */
-input[name^="shadow-"]:checked + .switch.RightKey1:after {
-    content: '←';                          /* украшательство */
-}
-/* ==================== НАВИГАТОРЫ: переключатель ==================== */
-.toggle {
-    cursor: pointer;                       /* украшательство */
-}
-.toggle:after {
-    content: 'развернуть спойлер';         /* украшательство */
-    cursor: pointer;                       /* украшательство */
-    color: #08f;                           /* украшательство */
-    font-size: 8pt;                        /* украшательство */
-    text-decoration: underline;            /* украшательство */
-}
-.toggle:hover:after {
-    text-decoration: none;                 /* украшательство */
-}
-/* ==================== ОБРАБОТКИ ОБЩИЕ: события переключателя ==================== */
-/* включен */
-input[name^="shadow-"]:checked + .toggle:after {
-    content: 'свернуть';                   /* украшательство */
-}
-/* ==================== НАВИГАТОРЫ: кнопка ==================== */
+
+/* НАВИГАТОРЫ: кнопка */
 .button {
-    cursor: pointer;                       /* украшательство */
-    background: #ccc;                      /* украшательство */
-    display: inline-block;                 /* украшательство */
-    text-align: center;                    /* украшательство */
-    margin: 0 5px 15px 5px;                /* украшательство */
-    line-height: 30px;                     /* украшательство */
-    height: 30px;                          /* украшательство */
-    width: 80px;                           /* украшательство */
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0.1em 0.5em;
 }
-/* ==================== ОБРАБОТКИ ОБЩИЕ: события кнопки ==================== */
-/* курсор над кнопкой */
-.button:hover {
-    background: #8ff;                      /* украшательство */
+
+.enroll {
+  cursor: pointer;
+  display: inline-block;
+  background-color: #FAEECD;
+  border-radius: 4px;
+  padding: 0.25em 0.5em;
+}
+
+.enroll:hover {
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 /* кнопка выбрана */
 input[name^="shadow-"]:checked + .button {
-    background: #f8f;                      /* украшательство */
+  background: yellow;
 }
-/* ==================== ОБРАБОТКИ ЧАСТНЫЕ: события флажка 1 ==================== */
-/* флажок помечен - скрываем связанные с ним уведомления */
-input[name="function1"]:checked ~ .cases.visible.NonAutoDisplay,
-input[name="function1"]:checked ~ .cases .cases.visible.NonAutoDisplay,
-input[name="function1"]:checked ~ #slider .cases.visible.NonAutoDisplay,
-input[name="function1"]:checked ~ .cases.visible.inline.NonAutoDisplay,
-input[name="function1"]:checked ~ .cases .cases.visible.inline.NonAutoDisplay,
-input[name="function1"]:checked ~ #slider .cases.visible.inline.NonAutoDisplay {
-    display: none !important;
-}
-/* и вдруг есть уведомление для противоположного состояния - надо показать */
-input[name="function1"]:checked ~ .cases.inline.NonAutoDisplay,
-input[name="function1"]:checked ~ .cases .cases.inline.NonAutoDisplay,
-input[name="function1"]:checked ~ #slider .cases.inline.NonAutoDisplay {
-    display: inline !important;
-}
-input[name="function1"]:checked ~ .cases.NonAutoDisplay,
-input[name="function1"]:checked ~ .cases .cases.NonAutoDisplay,
-input[name="function1"]:checked ~ #slider .cases.NonAutoDisplay {
-    display: block;
-}
-/* ==================== ОБРАБОТКИ ЧАСТНЫЕ: события слайдера ==================== */
-/* курсор над кнопкой слайда - показываем её слайд (если флажок не включен) */
-input[name="function1"]:not(:checked) ~ .SlideKey1:hover ~ #slider .elements .SlideBox1,
-input[name="function1"]:not(:checked) ~ .SlideKey2:hover ~ #slider .elements .SlideBox2,
-input[name="function1"]:not(:checked) ~ .SlideKey3:hover ~ #slider .elements .SlideBox3,
-input[name="function1"]:not(:checked) ~ .SlideKey4:hover ~ #slider .elements .SlideBox4 {
-    display: block !important;                       /* гарантируем не перекрытие другим событием */
-}
-/* и скрываем возможно выбранный слайд (ведь в z-index он может оказаться выше) */
-input[name="function1"]:not(:checked) ~ .SlideKey1:hover ~ #slider .element,
-input[name="function1"]:not(:checked) ~ .SlideKey2:hover ~ #slider .element,
-input[name="function1"]:not(:checked) ~ .SlideKey3:hover ~ #slider .element,
-input[name="function1"]:not(:checked) ~ .SlideKey4:hover ~ #slider .element {
-    display: none !important;                    /* гарантируем не перекрытие другим событием */
-}
+
 /* кнопка слайда выбрана - показываем её слайд */
 input[name^="shadow-"]:checked + .SlideKey1 ~ #slider .SlideBox1,
 input[name^="shadow-"]:checked + .SlideKey2 ~ #slider .SlideBox2,
 input[name^="shadow-"]:checked + .SlideKey3 ~ #slider .SlideBox3,
 input[name^="shadow-"]:checked + .SlideKey4 ~ #slider .SlideBox4 {
-    display: block;
+  display: block;
 }
-/* и скрываем связанное с этим уведомление */
-input[name="shadow-slide"]:checked ~ .cases.visible.NonSelected,
-input[name="shadow-slide"]:checked ~ .cases .cases.visible.NonSelected,
-input[name="shadow-slide"]:checked ~ #slider .cases.visible.NonSelected,
-input[name="shadow-slide"]:checked ~ .cases.visible.inline.NonSelected,
-input[name="shadow-slide"]:checked ~ .cases .cases.visible.inline.NonSelected,
-input[name="shadow-slide"]:checked ~ #slider .cases.visible.inline.NonSelected {
-    display: none !important;
-}
-/* и вдруг есть уведомление для противоположного состояния - надо показать */
-input[name="shadow-slide"]:checked ~ .cases.inline.NonSelected,
-input[name="shadow-slide"]:checked ~ .cases .cases.inline.NonSelected,
-input[name="shadow-slide"]:checked ~ #slider .cases.inline.NonSelected {
-    display: inline !important;
-}
-input[name="shadow-slide"]:checked ~ .cases.NonSelected,
-input[name="shadow-slide"]:checked ~ .cases .cases.NonSelected,
-input[name="shadow-slide"]:checked ~ #slider .cases.NonSelected {
-    display: block;
-}
-/* ==================== ОБРАБОТКИ ЧАСТНЫЕ: события спойлера 1 ==================== */
-/* спойлер раскрыт - показываем контент спойлера */
-input[name^="shadow-"]:checked + .SpoilerKey1 ~ .SpoilerBox1 {
-    display: block !important;
-}
-/* ==================== ОБРАБОТКИ ЧАСТНЫЕ: события спойлера 2 ==================== */
-/* спойлер раскрыт - показываем контент спойлера */
-input[name^="shadow-"]:checked + .SpoilerKey2 ~ .SpoilerBox2 {
-    display: block !important;
-}
-/* ==================== ОБРАБОТКИ ЧАСТНЫЕ: события левой панели ==================== */
-/* панель раскрыта - выдвигаем */
-input[name^="shadow-"]:checked + .LeftKey1 ~ .LeftBox1 {
-    width: 100px !important;
-}
-/* и сдвигаем левее тумблер панели */
-input[name^="shadow-"]:checked + .LeftKey1 {
-    margin-right: 315px !important;
-}
-/* и показываем контент панели */
-input[name^="shadow-"]:checked + .LeftKey1 ~ .LeftBox1 > div {
-    display: block !important;
-}
-/* ==================== ОБРАБОТКИ ЧАСТНЫЕ: события правой панели ==================== */
-/* панель раскрыта - выдвигаем */
-input[name^="shadow-"]:checked + .RightKey1 ~ .RightBox1 {
-    width: 100px !important;
-}
-    /* и сдвигаем правее тумблер панели */
-    input[name^="shadow-"]:checked + .RightKey1 {
-        margin-left: 315px !important;
-    }
-    /* и показываем контент панели */
-    input[name^="shadow-"]:checked + .RightKey1 ~ .RightBox1 > div {
-        display: block !important;
-    }
-/* ==================== ОТВЛЕЧЁННОЕ: подвал ==================== */
-#powered {
-    background: #bbb;
-    color: #444;
-    font-size: 8pt;
-    margin: 30px 0 0 0;
-    padding: 0 15px;
-    line-height: 18pt;
-    text-align: left;
-}
-#powered > a {
-    color: #04f;
-    text-decoration: none;
-    white-space: nowrap;
-    margin: 0 10px;
-}
-#powered > a:hover {
-    text-decoration: underline;
-}
-#powered > #counters {
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-    opacity: 0.01;
-}
-#powered > #counters * {
-    opacity: 0.01;
+
+/* Кнопки записи на приём */
+.enroll {
+
 }
