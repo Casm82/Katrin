@@ -1,0 +1,40 @@
+body { margin: 0; }
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.title {
+  font-size: 45px;
+  margin-bottom: 1em;
+  font-variant: small-caps;
+  font-style: italic;
+  font-family: serif;
+  text-shadow: 5px 5px 2px grey;
+  text-align: center;
+}
+
+#socialLinksArea {
+  background: black;
+  margin-top: 2em;
+  color: white;
+  height: 4em;
+  position: relative;
+}
+
+#socialLinksImg {
+  position: absolute;
+  top: 1em;
+  left: calc((100% - 200px)/2);
+}
+
+#socialLinksImg a {
+  margin: 1em;
+}
+
+#service {
+  position: absolute;
+  right: 1em;
+  top: 1.5em;
+}

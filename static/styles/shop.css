@@ -1,0 +1,35 @@
+#shop {
+  background-image: url(/images/wall_shop.png);
+}
+
+#back {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+}
+
+#back img {
+  vertical-align: middle;
+}
+
+#goods {
+  width: 900px;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+#goods td {
+  vertical-align: top;
+  padding: 1em;
+  border-bottom: 2px solid black;
+}
+
+.name, .price {
+  color: #5E5E5E;
+  font: normal normal normal 22px/1.4em serif;
+}
+
+.desc {
+  font-style: italic;
+  font-family: serif;
+}

@@ -1,4 +1,3 @@
-body { margin: 0; }
 a {
   text-decoration: none;
   color: black;
@@ -259,16 +258,6 @@ nav input[type="radio"] {
   font-style: italic;
 }
 
-.title {
-  font-size: 45px;
-  margin-bottom: 1em;
-  font-variant: small-caps;
-  font-style: italic;
-  font-family: serif;
-  text-shadow: 5px 5px 2px grey;
-  text-align: center;
-}
-
 #reviewsTable, #goodsTable {
   width: 980px;
   background: inherit;
@@ -307,16 +296,19 @@ nav input[type="radio"] {
 }
 
 #goodsTable th {
+  background-color: white;
+  padding: 2em 0;
+}
+
+#goodsTable a {
   text-shadow: 1px 1px 1px grey;
   font-variant: small-caps;
   font-size: 45px;
   font-style: italic;
   font-weight: lighter;
-  background-color: white;
-  height: 3em;
 }
 
-#goodsTable th:hover {
+#goodsTable a:hover {
   color: #FAEECD;
 }
 
@@ -372,28 +364,4 @@ nav input[type="radio"] {
   color: black;
   background-color: white;
   cursor: pointer;
-}
-
-#socialLinksArea {
-  background: black;
-  margin-top: 2em;
-  color: white;
-  height: 4em;
-  position: relative;
-}
-
-#socialLinksImg {
-  position: absolute;
-  top: 1em;
-  left: calc((100% - 200px)/2);
-}
-
-#socialLinksImg a {
-  margin: 1em;
-}
-
-#service {
-  position: absolute;
-  right: 1em;
-  top: 1.5em;
 }

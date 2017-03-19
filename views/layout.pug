@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title= title
+    link(rel="stylesheet" type="text/css" href="/styles/layout.css")
+    block css
+    block scripts
+  body
+    block content
+    footer#socialLinksArea
+      div#socialLinksImg
+        a(href="https://vk.com")
+          img(src="/images/logo_vk.png")
+        a(href="https://www.facebook.com")
+          img(src="/images/logo_f.png")
+        a(href="https://www.instagram.com/")
+          img(src="/images/logo_inst.png")
+      div#service
+        a(href="/service")
+          img(src="/images/service.png")
