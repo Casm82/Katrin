@@ -1,15 +1,5 @@
-#shop {
+section {
   background-image: url(/images/wall_services.png);
-}
-
-#back {
-  position: fixed;
-  top: 1em;
-  left: 1em;
-}
-
-#back img {
-  vertical-align: middle;
 }
 
 #goods {

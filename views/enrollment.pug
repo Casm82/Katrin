@@ -1,0 +1,31 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/enrollment.css")
+block content
+  section
+    div#back
+      a(href="/" title="На главную страницу" rel="prev")
+        img(src="/images/back.png")
+        span Назад
+    div#board
+      div.title= title
+      div#service
+
+      input(id="shadow-slide1" name="shadow-slide" type="radio")
+      label( class="button SlideKey1" for="shadow-slide1") Лицо
+
+      input(id="shadow-slide2" name="shadow-slide" type="radio")
+      label( class="button SlideKey2" for="shadow-slide2") Волосы
+
+      input(id="shadow-slide3" name="shadow-slide" type="radio")
+      label( class="button SlideKey3" for="shadow-slide3") Ногти
+
+      input(id="shadow-slide4" name="shadow-slide" type="radio")
+      label( class="button SlideKey4" for="shadow-slide4") Тату
+
+      div(id="slider") Пример слайдера, управляемого с помощью CSS3
+        div(class="elements")
+          div(class="element SlideBox1") список товаров, если бы это был модуль оформления заказа
+          div(class="element SlideBox2") ввод адреса доставки, если бы это был модуль оформления заказа
+          div(class="element SlideBox3") выбор способа оплаты, если бы это был модуль оформления заказа
+          div(class="element SlideBox4") завершение заказа, если бы это был модуль оформления заказа

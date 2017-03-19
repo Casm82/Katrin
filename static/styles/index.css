@@ -75,7 +75,7 @@ nav input[type="radio"] {
 }
 
 #goods {
-  background-image: url(/images/goods.png);
+  background-image: url(/images/wall_goods.png);
   background-color: #FAEECD;
   width: 100%;
   padding-top: 2em;
@@ -85,6 +85,7 @@ nav input[type="radio"] {
   background-image: url(/images/wall_circles.jpg);
   width: 100%;
   padding-top: 4em;
+  padding-bottom: 4em;
 }
 
 #headComposition {
@@ -130,7 +131,7 @@ nav input[type="radio"] {
   top: 10em;
 }
 
-#aboutShow, #book {
+#aboutShow, #enrollment {
   border: 2px solid #FAB89D;
   border-radius: 4px;
   color: #E97B4E;
@@ -205,8 +206,8 @@ nav input[type="radio"] {
   transform: rotate(360deg);
 }
 
-#book { width: 15em; }
-#book:hover { background-color: white; }
+#enrollment { width: 15em; }
+#enrollment:hover { background-color: white; }
 
 #servicesGrid, #mastersGrid {
   margin: 0em auto;
@@ -283,7 +284,7 @@ nav input[type="radio"] {
 .masterGalery {
   position: absolute;
   bottom: 1em;
-  left: calc((220px - 6em)/2);
+  left: calc((220px - 8em)/2);
   font-style: italic;
 }
 

@@ -5,6 +5,10 @@ module.exports = (app) => {
     res.render("index", { "title": "Кэтрин" });
   });
 
+  app.get("/enrollment", (req, res) => {
+    res.render("enrollment", { "title": "Персональные услуги" });
+  });
+
   app.get("/shop/organic", (req, res) => {
     res.render("organic", { "title": "Товары Organic" });
   });
