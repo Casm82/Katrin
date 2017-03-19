@@ -1,49 +1,10 @@
 "use strict";
 
 window.addEventListener("load", function () {
-  var aboutShow = document.getElementById("aboutShow");
-  var aboutTxt = document.getElementById("aboutTxt");
-  var aboutClose = document.getElementById("aboutClose");
-
-  var main = document.getElementById("main");
-  var services = document.getElementById("services");
-  var masters = document.getElementById("masters");
-  var reviews = document.getElementById("reviews");
-  var goods = document.getElementById("goods");
-  var contacts = document.getElementById("contacts");
-
   // Навигация - текст
   var navTextItems = document.getElementsByClassName("navText");
   // Навигация - радиокнопки
   var radioNavItems =  document.getElementsByName("navRadio");
-
-  // Переход между разделами
-  function scrollToNavItem () {
-    if (this.dataset && this.dataset.nav) {
-      var navigateTo = this.dataset.nav;
-      let navItemElm = document.getElementById(navigateTo);
-      navItemElm.scrollIntoView({block: "start", behavior: "smooth"});
-
-      // В меню навигации оставляем видимым только пункт,
-      // отображаемый в области видимости
-      /*
-      var currentNavElm = document.elementFromPoint(0,100);
-      for (var i=0; i<navTextItems.length; i++) {
-        if (navTextItems[i].dataset.nav == currentNavElm.id)
-          navTextItems[i].classList.remove("transparent")
-        else
-          navTextItems[i].classList.add("transparent")
-      };
-      */
-
-      // Синхронизируем радиокнопки
-      for (var i=0; i<radioNavItems.length; i++) {
-        var radioNavValue = radioNavItems[i].dataset?radioNavItems[i].dataset.nav:null;
-        radioNavItems[i].checked = radioNavValue == navigateTo;
-      };
-    };
-  };
-
   // Навигация - нажатие на текст
   for (var i=0; i<navTextItems.length; i++) {
     navTextItems[i].addEventListener("click", scrollToNavItem, false);
@@ -52,18 +13,119 @@ window.addEventListener("load", function () {
   for (var i=0; i<radioNavItems.length; i++) {
     radioNavItems[i].addEventListener("change", scrollToNavItem, false);
   };
+  // Переход между разделами
+  function scrollToNavItem () {
+    if (this.dataset && this.dataset.nav) {
+      var navigateTo = this.dataset.nav;
+      let navItemElm = document.getElementById(navigateTo);
+      navItemElm.scrollIntoView({block: "start", behavior: "smooth"});
+      // Синхронизируем радиокнопки
+      for (var i=0; i<radioNavItems.length; i++) {
+        var radioNavValue = radioNavItems[i].dataset?radioNavItems[i].dataset.nav:null;
+        radioNavItems[i].checked = radioNavValue == navigateTo;
+      };
+    };
+  };
 
   // Обработчики показа и закрытия окна "О нас"
+  var aboutShow = document.getElementById("aboutShow"); // кнопка "О нас"
+  var aboutTxt = document.getElementById("aboutTxt");   // блок приветствия
   aboutShow.addEventListener("click", function () {
-    //aboutTxt.style.display = "block";
-    aboutTxt.classList.remove("invisible");
-    aboutTxt.classList.add("visible");
+    makeElmVisible(aboutTxt);
   }, false);
-  aboutClose.addEventListener("click", function () {
-    //aboutTxt.style.display = "none";
-    aboutTxt.classList.remove("visible");
-    aboutTxt.classList.add("invisible");
+
+  // Обработчики показа и закрытия окна "Оставить отзыв"
+  var feedbackShow = document.getElementById("feedbackShow"); // кнопка "Оставить отзыв"
+  var feedbackResult = document.getElementById("feedbackResult"); //  результат отправки формы
+  var submitFeedback = document.getElementById("submitFeedback");  // кнопка отправки формы отзыва
+  feedbackShow.addEventListener("click", function () {
+    makeElmVisible(feedbackTxt);
   }, false);
+  // Обработчик отправки отзыва
+  submitFeedback.addEventListener("click", function () {
+    var name    = document.getElementById("fb_name").value;
+    var email   = document.getElementById("fb_email").value;
+    var tel     = document.getElementById("fb_tel").value;
+    var title   = document.getElementById("fb_title").value;
+    var message = document.getElementById("fb_message").value;
+    if (message) {
+      var feedbackObj = { name, email, tel, title, message };
+      var req = new XMLHttpRequest();
+      req.open("POST", "/feedback");
+      req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+      req.send(JSON.stringify(feedbackObj));
+      req.onreadystatechange = function() {
+        if (req.readyState === 4) {
+          if (req.status === 200) {
+            // успешно отправлено - очищаем форму
+            document.getElementById("fb_name").value = "";
+            document.getElementById("fb_email").value = "";
+            document.getElementById("fb_tel").value = "";
+            document.getElementById("fb_title").value = "";
+            document.getElementById("fb_message").value = "";
+          };
+          if (req.status === 500) feedbackResult.textContent = req.responseText;
+          // прячем форму отзыва
+          makeElmInvisible(feedbackTxt);
+          // показываем блок результата
+          makeElmVisible(feedbackResult);
+          // через 2 сек - прячем результат
+          setTimeout(function () { makeElmInvisible(feedbackResult) }, 1500);
+        };
+      };
+    };
+  }, false);
+
+  // Обработчик отправки вопроса
+  var submitQuestion = document.getElementById("submitQuestion"); // кнопка отправки формы вопроса
+  submitQuestion.addEventListener("click", function () {
+    var name    = document.getElementById("q_name").value;
+    var email   = document.getElementById("q_email").value;
+    var tel     = document.getElementById("q_tel").value;
+    var message = document.getElementById("q_message").value;
+    if (message && (tel||email)) {
+      var questionObj = { name, email, tel, message };
+      var req = new XMLHttpRequest();
+      req.open("POST", "/question");
+      req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+      req.send(JSON.stringify(questionObj));
+      req.onreadystatechange = function() {
+        if (req.readyState === 4) {
+          if (req.status === 200) {
+            // успешно отправлено - очищаем форму
+            document.getElementById("q_name").value = "";
+            document.getElementById("q_email").value = "";
+            document.getElementById("q_tel").value = "";
+            document.getElementById("q_message").value = "";
+          };
+          if (req.status === 500) questionResult.textContent = req.responseText;
+          // показываем блок результата
+          makeElmVisible(questionResult);
+          // через 2 сек - прячем результат
+          setTimeout(function () { makeElmInvisible(questionResult) }, 3000);
+        };
+      };
+    };
+  }, false);
+
+  // Кнопки закрытия в блоках "О нас" и "Оставить отзыв"
+  var btnCloseElms = document.getElementsByClassName("btnClose");
+  for (var i=0; i<btnCloseElms.length; i++) {
+    btnCloseElms[i].addEventListener("click", hideBlockFn, false);
+  };
+  function hideBlockFn() {
+    this.parentElement.classList.remove("visible");
+    this.parentElement.classList.add("invisible");
+  };
 
 }, false);
 
+// Вспомогательные функции показывают или прячут элемент
+function makeElmVisible (elm) {
+  elm.classList.remove("invisible");
+  elm.classList.add("visible");
+};
+function makeElmInvisible (elm) {
+  elm.classList.add("invisible");
+  elm.classList.remove("visible");
+};

@@ -40,7 +40,7 @@ block content
       div#buttons
         div#aboutShow О нас
         div#aboutTxt.invisible
-          div#aboutClose
+          div.btnClose
             img(src="/images/close.png" alt="Закрыть")
           div
             strong Добро пожаловать!
@@ -50,19 +50,23 @@ block content
   section#services
     div#servicesGrid
       div.sericeRow
-        div.sericePink Уход
-        div
-          img(src="/images/care.jpg")
-        div.sericeBlack Лицо
-        div
-          img(src="/images/face.jpg")
+        a(href="/#goods")
+          div.sericePink Уход
+          div
+            img(src="/images/care.jpg")
+        a(href="/price/face")
+          div.sericeBlack Лицо
+          div
+            img(src="/images/face.jpg")
       div.sericeRow
-        div
-          img(src="/images/hair.jpg")
-        div.sericeBlack Волосы
-        div
-          img(src="/images/nails.jpg")
-        div.sericePink Ногти
+        a(href="/price/hair")
+          div
+            img(src="/images/hair.jpg")
+          div.sericeBlack Волосы
+        a(href="/price/nails")
+          div
+            img(src="/images/nails.jpg")
+          div.sericePink Ногти
   section#masters
     div#mastersGrid
       div.masterRow
@@ -130,7 +134,22 @@ block content
           strong Анна Петрова
         td
           strong Елена Иванова
-    div#feedback Оставить отзыв
+    div#feedbackShow Оставить отзыв
+    div#feedbackTxt.invisible
+      div.btnClose
+        img(src="/images/close.png" alt="Закрыть")
+      div#feedbackInput
+        div
+          input(type="text" id="fb_name" placeholder="Имя" maxlength="150")
+        div
+          input(type="email" id="fb_email" placeholder="E-mail" maxlength="150")
+        div
+          input(type="tel" id="fb_tel" placeholder="Телефон" maxlength="150")
+        div
+          input(type="text" id="fb_title" placeholder="Тема сообщения" maxlength="5000")
+        textarea(id="fb_message" placeholder="Сообщение")
+      input#submitFeedback(type="submit" value="Отправить")
+    div#feedbackResult.invisible Спасибо за отзыв!
   section#goods
     table#goodsTable
       caption.title Товары
@@ -166,11 +185,14 @@ block content
         div#questionInput
           div#questionSender
             div
-              input(type="text" name="name" placeholder="Имя")
+              input(type="text" id="q_name" placeholder="Имя" maxlength="150")
             div
-              input(type="email" name="email" placeholder="E-mail")
+              input(type="email" id="q_email" placeholder="E-mail" maxlength="150")
             div
-              input(type="tel" name="tel" placeholder="Телефон")
+              input(type="tel" id="q_tel" placeholder="Телефон" maxlength="150")
           div#questionMessage
-            textarea(name="message" placeholder="Сообщение")
+            textarea(id="q_message" placeholder="Сообщение" maxlength="5000")
         input#submitQuestion(type="submit" value="Отправить")
+      div#questionResult.invisible
+        div Ваш вопрос отправлен.
+        dvi Мы ответим на него как прочитаем.

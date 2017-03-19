@@ -146,7 +146,7 @@ nav input[type="radio"] {
 #aboutShow { width: 10em; }
 #aboutShow:hover { background-color: white; }
 
-#aboutTxt {
+#aboutTxt, #feedbackTxt, #feedbackResult, #questionResult {
   background-color: white;
   border: 2px solid #FAB89D;
   border-radius: 4px;
@@ -156,23 +156,52 @@ nav input[type="radio"] {
   padding: 1em 2em;
   position: fixed;
   top: 20%;
-  left: calc((100% - 700px)/2);
   z-index: 3;
-  text-align: justify;
-  width: 700px;
 }
 
-#aboutClose {
+#aboutTxt, #feedbackTxt {
+  left: calc((100% - 700px)/2);
+  width: 700px;
+  text-align: justify;
+}
+
+#feedbackResult {
+  left: calc((100% - 200px)/2);
+  width: 200px;
+  text-align: center;
+}
+
+#questionResult {
+  left: calc((100% - 400px)/2);
+  width: 400px;
+  text-align: center;
+  color: black;
+}
+
+#feedbackInput input, #feedbackInput textarea {
+  margin: 0.25em 0;
+  width: calc(100% - 1em);
+  border: 1px solid grey;
+  border-radius: 4px;
+  padding: 0.5em;
+}
+
+#feedbackInput textarea {
+  resize: none;
+  height: 8em;
+}
+
+.btnClose {
   position: absolute;
   right: 0;
   top: 0;
 }
 
-#aboutClose img {
+.btnClose img {
   transition: transform 0.75s ease-in-out;
 }
 
-#aboutClose img:hover {
+.btnClose img:hover {
   transform: rotate(360deg);
 }
 
@@ -186,7 +215,7 @@ nav input[type="radio"] {
 
 .sericeRow { clear: left; }
 
-.sericeRow > div {
+.sericeRow > a > div {
   width: 235px;
   height: 235px;
   float: left;
@@ -272,7 +301,7 @@ nav input[type="radio"] {
   vertical-align: top;
 }
 
-#feedback {
+#feedbackShow {
   border-radius: 4px;
   background-color: #FAB89D;
   color:  white;
@@ -284,9 +313,10 @@ nav input[type="radio"] {
   font-size: 1.25em;
   font-weight: bold;
   font-style: italic;
+  cursor: pointer;
 }
 
-#feedback:hover {
+#feedbackShow:hover {
   background-color: grey;
   color: #FAB89D;
 }
