@@ -18,7 +18,7 @@ module.exports = (app) => {
   });
 
   app.get("/price/face", (req, res) => {
-    res.render("face", { "title": "Макияж" });
+    res.render("face", { "title": "Уход за лицом" });
   });
 
   app.get("/price/hair", (req, res) => {
@@ -26,7 +26,7 @@ module.exports = (app) => {
   });
 
   app.get("/price/nails", (req, res) => {
-    res.render("nails", { "title": "Ногти" });
+    res.render("nails", { "title": "Уход за ногтями" });
   });
 
   app.post("/feedback", (req, res) => {
