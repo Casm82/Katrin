@@ -70,57 +70,17 @@ block content
           div.sericePink Ногти
   section#masters
     div#mastersGrid
-      div.masterRow
-        div.masterCell.leftCell
+      each master,idx in masters
+        -var cellClass = (idx%2)?"rightCell":"leftCell"
+        div.masterCell(class=cellClass)
           div
-            img(src="/images/master_Olga_Kuznecova.jpg")
+            img(src="/images/masters/" + master.id + ".jpg" alt="фотография" width="222" heigth="222")
           div.masterDescription
-            div.masterName Ольга Кузнецова
+            div.masterName= master.name
             div.masterHr
-            div.masterTitle мастер ногтевого сервиса
-            div.masterGalery Галерея работ
-        div.masterCell.rightCell
-          div
-            img(src="/images/master_Natalya_Kodesnikova.jpg")
-          div.masterDescription
-            div.masterName Наталья Кодесникова
-            div.masterHr
-            div.masterTitle мастер ногтевого сервиса
-            div.masterGalery Галерея работ
-      div.masterRow
-        div.masterCell.leftCell
-          div
-            img(src="/images/master_Alexandra_Stepanova.jpg")
-          div.masterDescription
-            div.masterName Александра Степанова
-            div.masterHr
-            div.masterTitle парикмахер
-            div.masterGalery Галерея работ
-        div.masterCell.rightCell
-          div
-            img(src="/images/master_Olga_Yakurnova.jpg")
-          div.masterDescription
-            div.masterName Ольга Якурнова
-            div.masterHr
-            div.masterTitle парикмахер
-            div.masterGalery Галерея работ
-      div.masterRow
-        div.masterCell.leftCell
-          div
-            img(src="/images/master_Maria_Alexandrova.jpg")
-          div.masterDescription
-            div.masterName Мария Александрова
-            div.masterHr
-            div.masterTitle мастер по наращиванию волос
-            div.masterGalery Галерея работ
-        div.masterCell.rightCell
-          div
-            img(src="/images/master_Alexandr_Kashurnikov.jpg")
-          div.masterDescription
-            div.masterName Александр Кашурников
-            div.masterHr
-            div.masterTitle тату мастер
-            div.masterGalery Галерея работ
+            div.masterTitle= master.title
+            div.masterGalery
+              a(href="/gallery/" + master.id) Галерея работ
   section#reviews
     div#reviewsTable
       div.title Отзывы

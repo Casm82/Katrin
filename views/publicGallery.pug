@@ -1,0 +1,19 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block content
+  body
+    section
+      div#back
+        a(href="/" title="На страницу" rel="prev")
+          img(src="/images/back.png" alt="назад")
+          span Назад
+      div.title
+        div= masterObj.name
+      div#board
+        if (galleryObj.length)
+          div.center
+            each row in galleryObj
+              img(src="/images/gallery/" + row.fileName width="667" heigth="337")
+        else
+          div.center Нет фотографий работ

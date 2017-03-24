@@ -16,7 +16,7 @@ module.exports = (app) => {
   app.get("/admin/gallery/:masterId", checkAuth, (req, res) => {
     let masterId = req.params.masterId;
     let mysqlDB = mysql.createConnection(config.mysqlConfig);
-    
+
     async.parallel([
       // информация о мастере
       (cbParallel) => {
@@ -26,7 +26,7 @@ module.exports = (app) => {
         };
         mysqlDB.query(masterInfo, (err, rows) => {
           cbParallel(err, (rows&&rows.length)?rows[0]:{} );
-        }); 
+        });
       },
       // список фотографий
       (cbParallel) => {
@@ -51,9 +51,8 @@ module.exports = (app) => {
         });
       };
     });
-    
   });
-  
+
   app.post("/admin/gallery", checkAuth, (req, res) => {
     let mysqlDB = mysql.createConnection(config.mysqlConfig);
     let currDate = new Date();
@@ -62,17 +61,17 @@ module.exports = (app) => {
     let fileName;
     let fileExt;
     let filePath;
-    
+
     if (req.body.delete) {
       deleteArray = Array.isArray(req.body.delete)?req.body.delete:[req.body.delete];
     };
-    
+
     if (req.files&&req.files.workImg) {
       fileExt = req.files.workImg.mimetype.split("/")[1];
       fileName = `${masterId}-${currDate.getTime()}.${fileExt}`;
       filePath = path.join(__dirname, "static", "images", "gallery", fileName);
     };
-    
+
     async.parallel([
       // сохраняем файл
       (cbParallel) => {
