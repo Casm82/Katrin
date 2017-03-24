@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+  title= title
+  link(rel="stylesheet", type="text/css", href="/styles/layout.css")
+  link(rel="stylesheet", type="text/css", href="/styles/login.css")
+  script(src="/scripts/login.js")
+  body
+    div#login
+      form(method="POST", action="/session")
+        div
+          label(for="username") Логин:
+        div
+          input#username(name="username", placeholder="Введите логин", required="", maxlength="16", size="32", autofocus)
+        div
+          label(for="password") Пароль:
+        div
+          input#password(type="password", name="password", placeholder="Введите пароль", required="", size="32")
+        div
+          input#loginButton(type="submit", value="Вход")
+      div#loginMsg
+        | В пароле присутствуют кириллические символы.
+        br
+        | Проверьте раскладку клавиатуры.

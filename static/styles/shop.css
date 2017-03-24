@@ -1,5 +1,9 @@
-#shop {
+body {
   background-image: url(/images/wall_shop.png);
+}
+
+section {
+  padding-bottom: 6em;
 }
 
 #back {

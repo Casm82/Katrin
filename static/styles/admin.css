@@ -1,0 +1,89 @@
+body {
+  background-image: url(/images/wall_services.png);
+  font-family: sans-serif;
+}
+
+section {
+  padding-bottom: 6em;
+}
+
+#board {
+  margin: 0 auto;
+  width: 1024px;
+}
+
+#menuButtons {
+  position: fixed;
+  top: 4em;
+  right: 2em;
+}
+
+#menuButtons button {
+  border: 1px solid grey;
+  border-radius: 4px;
+  padding: 0.5em;
+  margin: 0.5em;
+  background: inherit;
+}
+
+#menuButtons button:hover{
+  border: 1px solid grey;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.svcButton {
+  padding: 0.5em;
+  min-width: 10em;
+  margin: 0.5em;
+  background-color: wheat;
+  border-radius: 4px;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
+.svcButton:hover {
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table, caption {
+  margin: 0.5em auto;
+}
+
+
+td a {
+  color: blue;
+}
+
+th, td {
+  border: 1px solid;
+}
+
+th {
+  padding: 0.5em;
+}
+
+td {
+  padding: 0.5em;
+}
+
+.selected {
+  background-color: yellow;
+}
+
+.center {
+  text-align: center;
+}
+
+.top {
+  vertical-align: top;
+}
+
+textarea {
+  width: 25em;
+  height: 8em;
+}

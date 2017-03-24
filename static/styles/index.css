@@ -85,7 +85,7 @@ nav input[type="radio"] {
   background-image: url(/images/wall_circles.jpg);
   width: 100%;
   padding-top: 4em;
-  padding-bottom: 4em;
+  padding-bottom: 6em;
 }
 
 #headComposition {
@@ -209,6 +209,8 @@ nav input[type="radio"] {
 #enrollment { width: 15em; }
 #enrollment:hover { background-color: white; }
 
+#enrollment a { color: #E97B4E; }
+
 #servicesGrid, #mastersGrid {
   margin: 0em auto;
   width: 940px;
@@ -288,7 +290,7 @@ nav input[type="radio"] {
   font-style: italic;
 }
 
-#reviewsTable, #goodsTable {
+#goodsTable {
   width: 980px;
   background: inherit;
   margin: 0 auto;
@@ -298,8 +300,15 @@ nav input[type="radio"] {
   font-size: 1.15em;
 }
 
-#reviewsTable td {
-  vertical-align: top;
+#reviewsTable {
+  font-family: sans-serif;
+  font-size: 1.15em;
+  width: 940px;
+  margin: 0 auto;
+}
+
+#reviewsTable div {
+  margin: 0.5em 0;
 }
 
 #feedbackShow {

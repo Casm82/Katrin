@@ -1,0 +1,48 @@
+table {
+  border-collapse: collapse;
+}
+
+#calendar, #clock {
+  margin-bottom: 1em;
+}
+
+#calendar td, #clock td {
+  width: 32px;
+  height: 32px;
+  border: 2px solid grey;
+}
+
+.currDay {
+  background-color: wheat;
+}
+
+.extMonth {
+  color: grey;
+}
+
+.currDay, .curMonth {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.selected, .currDay:hover, .curMonth:hover {
+  background-color: yellow;
+}
+
+.time {
+  padding: 0.25em;
+}
+
+.time.avilable {
+  color: black;
+}
+
+.time.inavilable {
+  color: grey;
+}
+
+.time.available:hover {
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  background-color: yellow;
+  cursor: pointer;
+}

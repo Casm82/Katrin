@@ -1,0 +1,29 @@
+if (requests.length)
+  table
+    caption
+      strong Список заявок
+    tr
+      th Время записи
+      th Отправитель
+      th E-mail
+      th Телефон
+      th Сообщение
+      th Выполнено
+      th Удалить
+    each row in requests
+      tr(id=row.id)
+        td= row.selectedDate.toLocaleString()
+        td= row.name
+        td
+          a(href="mailto:" + row.email)= row.email
+        td= row.tel
+        td= row.message
+        td.center
+          if (row.completed)
+            input(type="checkbox" name="completed" checked)
+          else
+            input(type="checkbox" name="completed")
+        td.center
+          input(type="checkbox" name="delete")
+else
+  p Список заявок пуст

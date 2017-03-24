@@ -1,0 +1,67 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block scripts
+  script(src="/scripts/admMasters.js")
+block content
+  body
+    section
+      div#back
+        a(href="/admin" title="На страницу администрирования" rel="prev")
+          img(src="/images/back.png" alt="назад")
+          span Назад
+      div.title= title
+      div#menuButtons
+        div
+          button#saveList(type="button" title="Сохранить")
+            img(src="/images/save.png" alt="Сохранить")
+        div
+          button(type="reset" title="Отменить")
+            img(src="/images/undo.png" alt="Отменить")
+        div
+          button#newMaster(type="reset" title="Новый мастер")
+            img(src="/images/new.png" alt="Новый мастер")
+      div#board
+        table.center
+          tbody#mastersTable
+            tr
+              th Имя
+              th Должность
+              th Галерея
+              th E-mail
+              th Оповещения
+              th Телефон
+              th Удалить
+            tr(id="mst-0" hidden="hidden")
+              td
+                input(name="name" size="20")
+              td
+                input(name="title" size="20")
+              td 12
+              td
+                input(name="email" size="15")
+              td
+                input(type="checkbox" name="notify")
+              td
+                input(name="tel" size="10")
+              td
+                input(type="checkbox" name="delete")
+            each row in rows
+              tr(id="mst-" + row.id)
+                td
+                  input(value=row.name name="name" size="20")
+                td
+                  input(value=row.title name="title" size="20")
+                td
+                  a(href="/admin/gallery/"+row.id) Работы
+                td
+                  input(value=row.email name="email" size="15")
+                td
+                  if (row.notify)
+                    input(type="checkbox" name="notify" checked)
+                  else
+                    input(type="checkbox" name="notify")
+                td
+                  input(value=row.tel name="tel" size="10")
+                td
+                  input(type="checkbox" name="delete")

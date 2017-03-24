@@ -1,9 +1,19 @@
 {
   "port"  : 80,
-  "mysql" : {
+  "admin" : {
+    "login": "katrin",
+    "pwd"  : "********"
+  },
+  "mysqlConfig" : {
     "host"     : "localhost",
-    "user"     : "appdb",
-    "password" : "xpFkEl204132",
-    "database" : "katrin_db"
-  }
+    "user"     : "katrin",
+    "password" : "************",
+    "database" : "katrin"
+  },
+  "mail" : {
+    "host"   : "mail.server.ru",
+    "port"   : 25,
+    "secure" : false,
+    "auth" : { "user" : "info", "pass" : "********" }
+  },
 }

@@ -1,0 +1,20 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/services.css")
+block content
+  body
+    section
+      div#back
+        a(href="/#services" title="На главную страницу" rel="prev")
+          img(src="/images/back.png")
+          span Назад
+      div.title= title
+      table#goods
+        each row in rows
+          tr
+            td
+              div.name= row.name
+              div.desc= row.description
+            td.price
+              span= row.price
+              span &nbsppуб.

@@ -1,5 +1,9 @@
-section {
+body {
   background-image: url(/images/wall_services.png);
+}
+
+section {
+  padding-bottom: 6em;
 }
 
 #goods {

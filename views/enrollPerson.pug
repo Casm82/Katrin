@@ -1,0 +1,36 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/enrollPerson.css")
+  link(rel="stylesheet" type="text/css" href="/styles/enrollCommon.css")
+block scripts
+  script(src="/scripts/enrollPerson.js")
+block content
+  section
+    div#back
+      a(href="/enrollment/"+serviceObj.id title="Выбор даты" rel="prev")
+        img(src="/images/back.png")
+        span Назад
+    div#board
+      div.title= title
+      div#personInput
+        div
+          input(type="text" id="name" placeholder="* Имя" maxlength="150")
+        div
+          input(type="tel" id="tel" placeholder="* Телефон" maxlength="150")
+        div
+          input(type="email" id="email" placeholder="E-mail (необязательно)" maxlength="150")
+        textarea(id="message" placeholder="Сообщение (необязательно)")
+      div#registerResult.invisible
+        div Ваш вопрос отправлен.
+        div Мы ответим на него как прочитаем.
+      div#serviceDesc(data-svcid=serviceObj.id data-datesel=selectedDate)
+        div= serviceObj.name
+        div
+          span= serviceObj.duration
+          span &nbspмин.
+          span &nbsp|&nbsp
+          span= serviceObj.price
+          span &nbspруб.
+        hr
+        div= new Date(selectedDate).toLocaleString()
+        button#proceed() Зарегистрироваться

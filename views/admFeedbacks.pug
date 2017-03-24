@@ -1,0 +1,22 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block scripts
+  script(src="/scripts/admFeedbacks.js")
+block content
+  body
+    section
+      div#back
+        a(href="/admin" title="На страницу администрирования" rel="prev")
+          img(src="/images/back.png" alt="назад")
+          span Назад
+      div.title= title
+      div#menuButtons
+        div
+          button#saveList(type="button" title="Сохранить")
+            img(src="/images/save.png" alt="Сохранить")
+      div#board
+        label
+          input(id="showApproved" type="checkbox" name="showApproved")
+          | Показывать утверждённые отзывы
+        div#feedbacksList

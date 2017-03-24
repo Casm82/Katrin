@@ -1,0 +1,87 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/enrollService.css")
+  link(rel="stylesheet" type="text/css" href="/styles/enrollCommon.css")
+block content
+  section
+    div#back
+      a(href="/" title="На главную страницу" rel="prev")
+        img(src="/images/back.png")
+        span Назад
+    div#board
+      div.title= title
+
+      input(id="shadow-slide1" name="shadow-slide" type="radio" checked="")
+      label(class="button SlideKey1" for="shadow-slide1") Лицо
+
+      input(id="shadow-slide2" name="shadow-slide" type="radio")
+      label(class="button SlideKey2" for="shadow-slide2") Волосы
+
+      input(id="shadow-slide3" name="shadow-slide" type="radio")
+      label(class="button SlideKey3" for="shadow-slide3") Ногти
+
+      input(id="shadow-slide4" name="shadow-slide" type="radio")
+      label(class="button SlideKey4" for="shadow-slide4") Татуировки
+
+      div(id="slider")
+        div(class="elements")
+          div(class="element SlideBox1")
+            table
+              each svcObj, type in servicesObj
+                if (type == 1)
+                  each svc in svcObj
+                    tr
+                      td= svc.name
+                      td
+                        span= svc.duration
+                        span &nbspмин.
+                      td
+                        span= svc.price
+                        span &nbspруб.
+                      td.enroll
+                        a(href="/enrollment/" + svc.id) Записаться
+          div(class="element SlideBox2")
+            table
+              each svcObj, type in servicesObj
+                if (type == 2)
+                  each svc in svcObj
+                    tr
+                      td= svc.name
+                      td
+                        span= svc.duration
+                        span &nbspмин.
+                      td
+                        span= svc.price
+                        span &nbspруб.
+                      td.enroll
+                        a(href="/enrollment/" + svc.id) Записаться
+          div(class="element SlideBox3")
+            table
+              each svcObj, type in servicesObj
+                if (type == 3)
+                  each svc in svcObj
+                    tr
+                      td= svc.name
+                      td
+                        span= svc.duration
+                        span &nbspмин.
+                      td
+                        span= svc.price
+                        span &nbspруб.
+                      td.enroll
+                        a(href="/enrollment/" + svc.id) Записаться
+          div(class="element SlideBox4")
+            table
+              each svcObj, type in servicesObj
+                if (type == 4)
+                  each svc in svcObj
+                    tr
+                      td= svc.name
+                      td
+                        span= svc.duration
+                        span &nbspмин.
+                      td
+                        span= svc.price
+                        span &nbspруб.
+                      td.enroll
+                        a(href="/enrollment/" + svc.id) Записаться

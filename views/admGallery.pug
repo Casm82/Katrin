@@ -1,0 +1,32 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block content
+  body
+    section
+      div#back
+        a(href="/admin/masters" title="На страницу администрирования" rel="prev")
+          img(src="/images/back.png" alt="назад")
+          span Назад
+      div.title
+        div= title
+        div= masterObj.name
+      div#menuButtons
+        div
+          button(type="submit" form="uploadImg" title="Сохранить")
+            img(src="/images/save.png" alt="Сохранить")
+      div#board
+        form(id="uploadImg" action="/admin/gallery" method="POST" enctype="multipart/form-data")
+        input(form="uploadImg" type="hidden" value=masterObj.id name="masterId")
+        table.center
+          tbody
+            tr
+              th
+                input(form="uploadImg" type="file" name="workImg")
+              th Удалить
+            each row in galleryObj
+              tr
+                td
+                  img(src="/images/gallery/" + row.fileName width="667" heigth="337")
+                td
+                  input(form="uploadImg" type="checkbox" name="delete" value=row.id)

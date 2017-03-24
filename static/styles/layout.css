@@ -5,6 +5,13 @@ a {
   color: black;
 }
 
+input, textarea, button {
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+input { padding: 0.25em; }
+
 .title {
   font-size: 45px;
   margin-bottom: 1em;
@@ -18,13 +25,13 @@ a {
 #socialLinksArea {
   background: black;
   color: white;
-  height: 4em;
+  height: 3em;
   position: relative;
 }
 
 #socialLinksImg {
   position: absolute;
-  top: 1em;
+  top: 0.5em;
   left: calc((100% - 200px)/2);
 }
 
@@ -44,6 +51,16 @@ a {
 
 #serviceEntry {
   position: absolute;
-  top: 1.5em;
+  top: 1em;
   right: 1em;
+}
+
+#serviceEntry a {
+  color: white;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

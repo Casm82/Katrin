@@ -1,0 +1,84 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block content
+  body
+    section
+      div#back
+        a(href="/" title="На главную страницу" rel="prev")
+          img(src="/images/back.png")
+          span Назад
+      div.title= title
+      div#board
+        a(href="/admin/requests")
+          div.svcButton Заявки
+        a(href="/admin/services")
+          div.svcButton Список услуг
+        a(href="/admin/masters")
+          div.svcButton Список мастеров
+        a(href="/admin/feedbacks")
+          div.svcButton Отзывы
+        a(href="/admin/questions")
+          div.svcButton Вопросы
+        
+        div#lastRequests
+          if (requests.length)
+            table
+              caption
+                strong Список заявок
+              tr
+                th Время записи
+                th Отправитель
+                th E-mail
+                th Телефон
+                th Сообщение
+              each row in requests
+                tr(id=row.id)
+                  td= row.selectedDate.toLocaleString()
+                  td= row.name
+                  td
+                    a(href="mailto:" + row.email)= row.email
+                  td= row.tel
+                  td= row.message
+          else
+            p Список заявок пуст
+        div#lastfeedbacks
+          if (feedbacks.length)
+            table
+              caption
+                strong Список неутверждённых отзывов
+              tr
+                th Время
+                th Отправитель
+                th E-mail
+                th Телефон
+                th Тема
+                th Сообщение
+              each row in feedbacks
+                tr
+                  td= row.ts.toLocaleString()
+                  td= row.name
+                  td
+                    a(href="mailto:" + row.email)= row.email
+                  td= row.tel
+                  td= row.title
+                  td= row.message
+        div#lastQuestions
+          if (questions.length)
+            table
+              caption
+                strong Список вопросов без ответа
+              tr
+                th Время
+                th Отправитель
+                th E-mail
+                th Телефон
+                th Вопрос
+              each row in questions
+                tr
+                  td= row.ts.toLocaleString()
+                  td= row.name
+                  td
+                    a(href="mailto:" + row.email)= row.email
+                  td= row.tel
+                  td= row.message

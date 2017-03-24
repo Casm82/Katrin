@@ -1,0 +1,31 @@
+if (questions.length)
+  table
+    caption
+      strong Список отзывов
+    tr
+      th Время
+      th Отправитель
+      th E-mail
+      th Телефон
+      th Тема
+      th Сообщение
+      th Отвечено
+      th Удалить
+    each row in questions
+      tr(id=row.id)
+        td= row.ts.toLocaleString()
+        td= row.name
+        td
+          a(href="mailto:" + row.email)= row.email
+        td= row.tel
+        td= row.title
+        td= row.message
+        td.center
+          if (row.answered)
+            input(type="checkbox" name="answered" checked)
+          else
+            input(type="checkbox" name="answered")
+        td.center
+          input(type="checkbox" name="delete")
+else
+  p Список отзывов пуст

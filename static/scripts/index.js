@@ -63,8 +63,9 @@ window.addEventListener("load", function () {
             document.getElementById("fb_tel").value = "";
             document.getElementById("fb_title").value = "";
             document.getElementById("fb_message").value = "";
+            feedbackResult.innerHTML = "Спасибо за отзыв!";
           };
-          if (req.status === 500) feedbackResult.textContent = req.responseText;
+          if (req.status === 500) feedbackResult.innerHTML = "Что-то пошло не так.";
           // прячем форму отзыва
           makeElmInvisible(feedbackTxt);
           // показываем блок результата
@@ -97,8 +98,9 @@ window.addEventListener("load", function () {
             document.getElementById("q_email").value = "";
             document.getElementById("q_tel").value = "";
             document.getElementById("q_message").value = "";
+            questionResult.innerHTML = "<div>Ваш вопрос отправлен.</div><div>Мы ответим на него как прочитаем.</div></div>";
           };
-          if (req.status === 500) questionResult.textContent = req.responseText;
+          if (req.status === 500) questionResult.textContent = "Что-то пошло не так.";
           // показываем блок результата
           makeElmVisible(questionResult);
           // через 2 сек - прячем результат

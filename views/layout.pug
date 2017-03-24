@@ -8,14 +8,18 @@ html
     block scripts
   body
     block content
-    footer#socialLinksArea
-      div#socialLinksImg
-        a(href="https://vk.com")
-          img(src="/images/logo_vk.png")
-        a(href="https://www.facebook.com")
-          img(src="/images/logo_f.png")
-        a(href="https://www.instagram.com/")
-          img(src="/images/logo_inst.png")
-      div#serviceEntry
-        a(href="/service")
-          img(src="/images/service.png")
+    footer
+      div#socialLinksArea
+        div#socialLinksImg
+          a(href="https://vk.com")
+            img(src="/images/logo_vk.png")
+          a(href="https://www.facebook.com")
+            img(src="/images/logo_f.png")
+          a(href="https://www.instagram.com/")
+            img(src="/images/logo_inst.png")
+        div#serviceEntry
+          if (session && session.user)
+            a(href="/logout") Выход
+          else
+            a(href="/admin")
+              img(src="/images/login.png")
