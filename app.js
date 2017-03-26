@@ -29,7 +29,6 @@ app.use(session({
 }));
 
 routes(app);
-console.log(process.env);
 http.createServer(app).listen(process.env.KATRIN_PORT, () => {
-  console.log(`Web-сервер запущен и ожидает подключений по адресу http://${process.env.HOSTNAME}:${process.env.KATRIN_PORT}`);
+  console.log(`Web-сервер запущен и ожидает подключений на порту ${process.env.PORT}`);
 });
