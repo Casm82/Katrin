@@ -1,15 +1,14 @@
 "use strict";
 const config = require("./settings.json");
 const async = require("async");
-const mysql = require("mysql");
 const nodemailer = require("nodemailer");
 
-module.exports = (app) => {
+module.exports = (app, pool) => {
   app.get("/enrollment", (req, res) => {
     let title = "Персональные услуги";
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
-    mysqlDB.query("SELECT id,type,name,duration,price FROM service_list ORDER BY type,id", (err, rows) => {
-      mysqlDB.end();
+
+    pool.query("SELECT id,type,name,duration,price FROM service_list ORDER BY type,id", (err, rows) => {
+
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       } else {
@@ -27,41 +26,41 @@ module.exports = (app) => {
       };
     });
   });
-  
+
   app.get("/enrollment/:serviceId", (req, res) => {
     let title = "Выбор даты";
     let serviceId = req.params.serviceId?req.params.serviceId.toString().replace(/\D/g,""):null;
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
     if (serviceId) {
-      mysqlDB.query({
-        "sql"    : "SELECT id,name,duration,price FROM service_list WHERE id=?",
+      pool.query({
+        "text"   : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
         "values" : [serviceId]
       }, (err, rows) => {
-        mysqlDB.end();
+
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
           let serviceObj = (rows&&rows.length)?rows[0]:{}; // выбранная услуга
-          
+
           // Календарь
           let curDate = new Date(); // текущая дата и дата в прошлом месяце
           let prevDate = new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate());
-          
+
           let leapYear = curDate.getFullYear()%4?false:true;  // високосный год
-          
+
           // массив кол-ва дней в месяцах и названия месяцев
           let daysInMonth = [31, leapYear?29:28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
           let monthArray = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
-          
+
           // текущий день и месяц
           let dayNow = curDate.getDate(); // текущий день месяца
           let curDoW = curDate.getDay();  // текущий день недели
           let monthNum = curDate.getMonth();
           let monthTxt = monthArray[curDate.getMonth()];
-          
+
           let maxDaysCurr = daysInMonth[curDate.getMonth()];  // кол-во дней в текущем месяце
           let maxDaysPrev = daysInMonth[prevDate.getMonth()]; // кол-во дней в прошлом месяце
-          
+
           // Определяем день недели первого числа месяца
           let firstDoW = new Date(curDate.getFullYear(), curDate.getMonth(), 1).getDay();
           if (firstDoW==0) firstDoW=7;
@@ -82,18 +81,18 @@ module.exports = (app) => {
       res.status(500).send("Не указан идентификатор услуги");
     };
   });
-  
+
   app.get("/enrollment/:serviceId/:selectedDate", (req, res) => {
     let title = "Контактные данные";
     let serviceId = req.params.serviceId?req.params.serviceId.toString().replace(/\D/g,""):null;
     let selectedDate = req.params.selectedDate?Number(req.params.selectedDate.toString().replace(/\D/g,"")):null;
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
     if (serviceId) {
-      mysqlDB.query({
-        "sql"    : "SELECT id,name,duration,price FROM service_list WHERE id=?",
+      pool.query({
+        "text"    : "SELECT id,name,duration,price FROM service_list WHERE id=?",
         "values" : [serviceId]
       }, (err, rows) => {
-        mysqlDB.end();
+
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
@@ -105,7 +104,7 @@ module.exports = (app) => {
       res.status(500).send("Не указан идентификатор услуги");
     };
   });
-  
+
   app.post("/register", (req, res) => {
     let registerObj = req.body;
     let name = req.body.name?req.body.name.replace(/[^a-zA-Zа-яА-Я0-9 ]/g,""):null;
@@ -115,13 +114,13 @@ module.exports = (app) => {
     let serviceId = req.body.serviceId?req.body.serviceId.replace(/\D/g,""):null;
     let selectedDate = (req.body.selectedDate&&req.body.selectedDate.replace(/\D/g,""))?new Date(Number(req.body.selectedDate.replace(/\D/g,""))):new Date();
     let regDate = new Date();
-    
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
+
     async.parallel([
       (cbParallel) => {
         // записываем запрос в БД
-        mysqlDB.query({
-          "sql"    : "INSERT INTO requests SET ?",
+        pool.query({
+          "text"    : "INSERT INTO (name, email, tel, message, serviceid, selecteddate, regdate) requests VALUES ($1, $2, $3, $4, $5, $6, $7)",
           "values" : [{ name, email, tel, message, serviceId, selectedDate, regDate }]
         }, (err) => {
           if (err) console.error(err);
@@ -134,31 +133,31 @@ module.exports = (app) => {
       },
       // Получаем список сотрудников для оповещения
       (cbParallel) => {
-        mysqlDB.query("SELECT name,email FROM masters WHERE notify=1", (err, rows) => {
+        pool.query("SELECT name,email FROM masters WHERE notify=1", (err, rows) => {
           cbParallel(err, rows);
         });
       },
       // Получаем описание услуги
       (cbParallel) => {
-        mysqlDB.query({
-          "sql"    : "SELECT id,name,duration,price FROM service_list WHERE id=?",
+        pool.query({
+          "text"    : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
           "values" : [serviceId]
         }, (err, rows) => {
           cbParallel(err, rows);
         });
       }
     ], (err, result) => {
-      mysqlDB.end();
+
       let emails = result[1];
       let serviceObj = (result[2]&&result[2].length)?result[2][0]:{}; // выбранная услуга
-      
+
       // Отправляем оповещение сотрудникам по email
       let emailToArray = [];
       emails.forEach((obj) => { emailToArray.push(`${obj.name} <${obj.email}>`) });
-      
+
       // Создаём объект SMTP транспорта
       let transporter = nodemailer.createTransport(config.mail);
-      
+
       // Объект сообщения
       let mailMessage = {
         "to"      : emailToArray.join(","),
@@ -167,8 +166,8 @@ module.exports = (app) => {
       };
 
       console.log("\n%j", mailMessage);
-      
-      /* 
+
+      /*
       transporter.sendMail(message, (error, info) => {
         if (error) {
           console.error('Error occurred');
@@ -180,7 +179,7 @@ module.exports = (app) => {
         transporter.close();
       });
       */
-      
+
     });
   });
 };

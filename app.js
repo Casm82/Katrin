@@ -31,6 +31,6 @@ app.use(session({
 
 routes(app);
 
-http.createServer(app).listen(config.port, () => {
-  console.log("Web-сервер запущен и ожидает подключений по адресу http://127.0.0.1");
+http.createServer(app).listen(process.env.KATRIN_PORT, () => {
+  console.log(`Web-сервер запущен и ожидает подключений по адресу http://127.0.0.1:${process.env.KATRIN_PORT}`);
 });

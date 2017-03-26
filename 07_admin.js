@@ -1,6 +1,5 @@
 "use strict";
 var config = require("./settings.json");
-var mysql = require("mysql");
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -10,35 +9,35 @@ function checkAuth(req, res, next){
     res.status(401).redirect("/");
 }
 
-module.exports = (app) => {
+module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin", (req, res) => {
     if (req.session && req.session.user) {
-      let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
       async.parallel([
         // Список заявок
         (cbParallel) => {
-          mysqlDB.query("SELECT * FROM requests WHERE completed=0 ORDER BY selectedDate",
+          pool.query("SELECT * FROM requests WHERE completed=0 ORDER BY selectedDate",
           (err, rows) => {
             cbParallel(err, rows);
           });
         },
         // Список отзывов
         (cbParallel) => {
-          mysqlDB.query("SELECT * FROM feedbacks WHERE approved=0 ORDER BY ts DESC",
+          pool.query("SELECT * FROM feedbacks WHERE approved=0 ORDER BY ts DESC",
           (err, rows) => {
             cbParallel(err, rows);
           });
         },
         // Список неотвеченных вопросов
         (cbParallel) => {
-          mysqlDB.query("SELECT * FROM questions WHERE answered=0 ORDER BY ts DESC",
+          pool.query("SELECT * FROM questions WHERE answered=0 ORDER BY ts DESC",
           (err, rows) => {
             cbParallel(err, rows);
           });
         }
       ], (err, result) => {
-        mysqlDB.end();
+
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
@@ -54,7 +53,7 @@ module.exports = (app) => {
       res.render("login", { title: "Вход", session: req.session });
     };
   });
-  
+
   //////////////////////////////////////////////////////////////////////////////////////////
   app.post("/session", (req, res) => {
     var login = req.body.username.toString();

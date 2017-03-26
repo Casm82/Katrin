@@ -1,21 +1,19 @@
 "use strict";
-var config = require("./settings.json");
-var mysql = require("mysql");
-var async = require("async");
+const async = require("async");
 
-module.exports = (app) => {
+module.exports = (app, pool) => {
   app.get("/", (req, res) => {
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
     async.parallel([
       // Получаем отзывы
       (cbParallel) => {
-        let sqlQuery = "SELECT * FROM feedbacks WHERE approved=1 ORDER BY ts DESC";
-        mysqlDB.query(sqlQuery, (err, rows) => {
+        let sqlQuery = "SELECT * FROM feedbacks WHERE approved=TRUE ORDER BY ts DESC";
+        pool.query(sqlQuery, (err, result) => {
           // Получаем три случайных отзыва
           let feedbacks = [];
           let feedbacksId = new Set();
+          let rows = result?result.rows:[];
 
-          if (rows.length > 3) {
+          if (rows&&rows.length > 3) {
             while (feedbacksId.size < 3) {
               let i = Math.floor(Math.random()*rows.length);
               if (!feedbacksId.has(i)) {
@@ -31,12 +29,12 @@ module.exports = (app) => {
       },
       // Получаем информацию о мастерах
       (cbParallel) => {
-         mysqlDB.query("SELECT * FROM masters ORDER BY id", (err, rows) => {
-          cbParallel(err, rows);
+         pool.query("SELECT * FROM masters ORDER BY id", (err, result) => {
+          cbParallel(err, result?result.rows:[]);
          });
       }
       ], (err, result) => {
-        mysqlDB.end();
+
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
@@ -51,29 +49,28 @@ module.exports = (app) => {
 
   app.get("/gallery/:masterId", (req, res) => {
     let masterId = req.params.masterId;
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
-
     async.parallel([
       // информация о мастере
       (cbParallel) => {
         let masterInfo = {
-          "sql"    : "SELECT * FROM masters WHERE id=?",
+          "text"   : "SELECT * FROM masters WHERE id=$1",
           "values" : [masterId]
         };
-        mysqlDB.query(masterInfo, (err, rows) => {
+        pool.query(masterInfo, (err, result) => {
+          let rows = result?result.rows:[];
           cbParallel(err, (rows&&rows.length)?rows[0]:{} );
         });
       },
       // список фотографий
       (cbParallel) => {
         let galleryList = {
-          "sql"    : "SELECT id,fileName FROM gallery WHERE masterId=? ORDER BY created DESC",
+          "text"   : "SELECT id,fileName FROM gallery WHERE masterId=$1 ORDER BY created DESC",
           "values" : [masterId]
         };
-        mysqlDB.query(galleryList, (err, rows) => { cbParallel(err, rows) });
+        pool.query(galleryList, (err, result) => { cbParallel(err, result?result.rows:[]) });
       }
     ], (err, result) => {
-      mysqlDB.end();
+
       let masterObj = result[0];
       let galleryObj = result[1];
       if (err) {

@@ -1,6 +1,5 @@
 "use strict";
 var config = require("./settings.json");
-var mysql = require("mysql");
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -10,12 +9,12 @@ function checkAuth(req, res, next){
     res.status(401).redirect("/");
 }
 
-module.exports = (app) => {
+module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin/services", checkAuth, (req, res) => {
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
-    mysqlDB.query("SELECT * FROM service_type ORDER BY id", (err, rows) => {
-      mysqlDB.end();
+
+    pool.query("SELECT * FROM service_type ORDER BY id", (err, rows) => {
+
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
@@ -24,67 +23,61 @@ module.exports = (app) => {
           "rows"    : rows,
           "session" : req.session,
         });
-    }); 
+    });
   });
-  
+
   app.post("/admin/listServices", checkAuth, (req, res) => {
     let svcTypeId = req.body.svcTypeId?req.body.svcTypeId.toString().replace(/\D/g,""):null;
     if (svcTypeId) {
-      let mysqlDB = mysql.createConnection(config.mysqlConfig);
-      mysqlDB.query({
-        "sql"    : "SELECT * FROM service_list WHERE type = ? ORDER BY id",
+
+      pool.query({
+        "text"   : "SELECT * FROM service_list WHERE type = $1 ORDER BY id",
         "values" : [svcTypeId]
       }, (err, rows) => {
-        mysqlDB.end();
+
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
           res.render("elmListServices", { "title": "Список услуг", "rows": rows, "svcType": svcTypeId });
-      }); 
+      });
     } else {
       res.status(500).send("Не указан id сервиса");
     };
   });
-  
+
   app.post("/admin/saveServices", checkAuth, (req, res) => {
     let svcTypeId = req.body.svcTypeId;
     let svcArray = req.body.svcArray;
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
     async.each(svcArray, (svcObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
-      mysqlDB.query({
-        "sql"    : "SELECT id FROM service_list WHERE id = ?",
+      pool.query({
+        "text"   : "SELECT id FROM service_list WHERE id=$1",
         "values" : [svcObj.id]
       }, (err, rows) => {
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
           if (svcObj.delete) {
-            mysqlDB.query({
-              "sql"    : "DELETE FROM service_list WHERE id=?",
+            pool.query({
+              "text"   : "DELETE FROM service_list WHERE id=$1",
               "values" : [svcObj.id]
             }, (err) => { cbEach(err) });
           } else {
-            mysqlDB.query({
-              "sql"    : "UPDATE service_list SET name=?,description=?,duration=?,price=? WHERE id=?",
+            pool.query({
+              "text"   : "UPDATE service_list SET name=$1,description=$2,duration=$3,price=$4 WHERE id=$5",
               "values" : [svcObj.name, svcObj.description, svcObj.duration, svcObj.price, svcObj.id]
             }, (err) => { cbEach(err) });
           };
         } else {
           // новая - вставляем
-          mysqlDB.query({
-            "sql"    : "INSERT INTO service_list SET ?",
-            "values" : [{
-              "type"        : svcTypeId,
-              "name"        : svcObj.name,
-              "description" : svcObj.description,
-              "duration"    : svcObj.duration,
-              "price"       : svcObj.price
-            }]
+          pool.query({
+            "text"   : "INSERT INTO service_list("type","name","description","duration","price") VALUES ($1, $2, $3, $4, $5)",
+            "values" : [svcTypeId, svcObj.name, svcObj.description, svcObj.duration, svcObj.price]
           }, (err) => { cbEach(err) });
         };
       });
     }, (err) => {
-      mysqlDB.end();
+
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else

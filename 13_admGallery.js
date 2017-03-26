@@ -1,6 +1,5 @@
 "use strict";
 var config = require("./settings.json");
-var mysql = require("mysql");
 var async = require("async");
 var path = require("path");
 
@@ -11,33 +10,33 @@ function checkAuth(req, res, next){
     res.status(401).redirect("/");
 }
 
-module.exports = (app) => {
+module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin/gallery/:masterId", checkAuth, (req, res) => {
     let masterId = req.params.masterId;
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
 
     async.parallel([
       // информация о мастере
       (cbParallel) => {
         let masterInfo = {
-          "sql"    : "SELECT * FROM masters WHERE id=?",
+          "text"   : "SELECT * FROM masters WHERE id=$1",
           "values" : [masterId]
         };
-        mysqlDB.query(masterInfo, (err, rows) => {
+        pool.query(masterInfo, (err, rows) => {
           cbParallel(err, (rows&&rows.length)?rows[0]:{} );
         });
       },
       // список фотографий
       (cbParallel) => {
         let galleryList = {
-          "sql"    : "SELECT id,fileName FROM gallery WHERE masterId=? ORDER BY created DESC",
+          "text"   : "SELECT id,fileName FROM gallery WHERE masterId=$1 ORDER BY created DESC",
           "values" : [masterId]
         };
-        mysqlDB.query(galleryList, (err, rows) => { cbParallel(err, rows) });
+        pool.query(galleryList, (err, rows) => { cbParallel(err, rows) });
       }
     ], (err, result) => {
-      mysqlDB.end();
+
       let masterObj = result[0];
       let galleryObj = result[1];
       if (err) {
@@ -54,7 +53,7 @@ module.exports = (app) => {
   });
 
   app.post("/admin/gallery", checkAuth, (req, res) => {
-    let mysqlDB = mysql.createConnection(config.mysqlConfig);
+
     let currDate = new Date();
     let masterId = req.body.masterId;
     let deleteArray = [];
@@ -86,10 +85,10 @@ module.exports = (app) => {
       (cbParallel) => {
         if (req.files&&req.files.workImg) {
           let gallerySave = {
-            "sql"    : "INSERT INTO gallery SET ?",
-            "values" : [{masterId, fileName}]
+            "text"   : "INSERT INTO(masterId, fileName) gallery VALUES ($1, $2)",
+            "values" : [masterId, fileName]
           };
-          mysqlDB.query(gallerySave, (err) => { cbParallel(err) });
+          pool.query(gallerySave, (err) => { cbParallel(err) });
         } else {
           cbParallel();
         };
@@ -98,13 +97,13 @@ module.exports = (app) => {
       (cbParallel) => {
         if (deleteArray.length) {
           let deleteTxt = deleteArray.join(",");
-          mysqlDB.query(`DELETE FROM gallery WHERE id IN (${deleteTxt})`, (err) => { cbParallel(err) });
+          pool.query(`DELETE FROM gallery WHERE id IN (${deleteTxt})`, (err) => { cbParallel(err) });
         } else {
           cbParallel();
         };
       }
     ], (err) => {
-      mysqlDB.end();
+
       if (err)
         res.status(500).send(`Произошла ошибка при сохранении: ${err.message?err.message:"неизвестная ошибка"}`);
       else

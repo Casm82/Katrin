@@ -25,8 +25,8 @@
     "express": "^4.15.2",
     "express-fileupload": "^0.1.2",
     "express-middlewares": "^0.1.1",
-    "mysql": "^2.13.0",
     "nodemailer": "^3.1.8",
+    "pg": "^6.1.5",
     "pug": "^2.0.0-beta11"
   }
 }
