@@ -1,5 +1,5 @@
 "use strict";
-var config = require("./settings.json");
+
 
 module.exports = (app, pool) => {
   app.post("/question", (req, res) => {

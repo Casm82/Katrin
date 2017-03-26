@@ -1,5 +1,5 @@
 "use strict";
-var config = require("./settings.json");
+
 
 function queryDB (title, typeId, res) {
 

@@ -1,5 +1,5 @@
 "use strict";
-var config = require("./settings.json");
+
 
 module.exports = (app) => {
   app.get("/shop/organic", (req, res) => {

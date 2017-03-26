@@ -1,5 +1,5 @@
 "use strict";
-var config = require("./settings.json");
+
 var pg = require("pg");
 var async = require("async");
 

@@ -1,5 +1,5 @@
 "use strict";
-var config = require("./settings.json");
+
 var async = require("async");
 
 function checkAuth(req, res, next){
