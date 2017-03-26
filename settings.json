@@ -15,5 +15,5 @@
     "port"   : 25,
     "secure" : false,
     "auth" : { "user" : "info", "pass" : "********" }
-  },
+  }
 }
