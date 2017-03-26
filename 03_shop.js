@@ -1,6 +1,5 @@
 "use strict";
 
-
 module.exports = (app) => {
   app.get("/shop/organic", (req, res) => {
     res.render("organic", { "title": "Товары Organic" });

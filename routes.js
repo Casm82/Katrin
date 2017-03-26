@@ -22,9 +22,11 @@ pool.on('error', function(error, client) {
   console.error(error);
 });
 
-pool.on('connect', client => {
+
+/*pool.on('connect', client => {
   console.log("connected to db");
 })
+*/
 
 module.exports = (app) => {
   require("./01_index")(app, pool);

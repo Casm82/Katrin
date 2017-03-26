@@ -1,13 +1,11 @@
 "use strict";
 
-
 function queryDB (title, typeId, res) {
-
   pool.query({
-    "text"    : "SELECT name, description, price FROM service_list WHERE type=$1 ORDER BY id",
+    "text"   : "SELECT name,description,price FROM service_list WHERE type=$1 ORDER BY id",
     "values" : [typeId]
-  }, (err, rows) => {
-
+  }, (err, result) => {
+    let rows = result?result.rows:[];
     if (err)
       res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
     else

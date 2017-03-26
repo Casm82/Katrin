@@ -12,9 +12,8 @@ function checkAuth(req, res, next){
 module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin/services", checkAuth, (req, res) => {
-
-    pool.query("SELECT * FROM service_type ORDER BY id", (err, rows) => {
-
+    pool.query("SELECT * FROM service_type ORDER BY id", (err, result) => {
+      let rows = result?result.rows:[];
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
@@ -29,12 +28,11 @@ module.exports = (app, pool) => {
   app.post("/admin/listServices", checkAuth, (req, res) => {
     let svcTypeId = req.body.svcTypeId?req.body.svcTypeId.toString().replace(/\D/g,""):null;
     if (svcTypeId) {
-
       pool.query({
         "text"   : "SELECT * FROM service_list WHERE type = $1 ORDER BY id",
         "values" : [svcTypeId]
-      }, (err, rows) => {
-
+      }, (err, result) => {
+        let rows = result?result.rows:[];
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
@@ -48,13 +46,13 @@ module.exports = (app, pool) => {
   app.post("/admin/saveServices", checkAuth, (req, res) => {
     let svcTypeId = req.body.svcTypeId;
     let svcArray = req.body.svcArray;
-
     async.each(svcArray, (svcObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
       pool.query({
         "text"   : "SELECT id FROM service_list WHERE id=$1",
         "values" : [svcObj.id]
-      }, (err, rows) => {
+      }, (err, result) => {
+        let rows = result?result.rows:[];
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
           if (svcObj.delete) {
@@ -71,7 +69,7 @@ module.exports = (app, pool) => {
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO service_list("type","name","description","duration","price") VALUES ($1, $2, $3, $4, $5)",
+            "text"   : "INSERT INTO service_list(type,name,description,duration,price) VALUES ($1, $2, $3, $4, $5)",
             "values" : [svcTypeId, svcObj.name, svcObj.description, svcObj.duration, svcObj.price]
           }, (err) => { cbEach(err) });
         };

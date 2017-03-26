@@ -1,6 +1,4 @@
 "use strict";
-
-var pg = require("pg");
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -20,32 +18,29 @@ module.exports = (app, pool) => {
 
   app.post("/admin/listRequests", checkAuth, (req, res) => {
     let showCompleted = req.body.showCompleted?req.body.showCompleted:null;
-
-
     let sqlQuery;
     if (showCompleted)
       sqlQuery = "SELECT * FROM requests ORDER BY selectedDate";
     else
-      sqlQuery = "SELECT * FROM requests WHERE completed=0 ORDER BY selectedDate";
+      sqlQuery = "SELECT * FROM requests WHERE completed=false ORDER BY selectedDate";
 
-    pool.query(sqlQuery, (err, rows) => {
-
+    pool.query(sqlQuery, (err, result) => {
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.render("elmListRequests", { "requests" : rows });
+        res.render("elmListRequests", { "requests" : result?result.rows:[] });
     });
   });
 
   app.post("/admin/saveRequests", checkAuth, (req, res) => {
     let requestArray = req.body;
-
     async.each(requestArray, (questionObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
       pool.query({
         "text"   : "SELECT id FROM requests WHERE id=$1",
         "values" : [questionObj.id]
-      }, (err, rows) => {
+      }, (err, result) => {
+        let rows = result?result.rows:[];
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
           if (questionObj.delete) {
@@ -65,7 +60,6 @@ module.exports = (app, pool) => {
         };
       });
     }, (err) => {
-
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else

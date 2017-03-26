@@ -1,6 +1,4 @@
 "use strict";
-
-var pg = require("pg");
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -11,7 +9,6 @@ function checkAuth(req, res, next){
 }
 
 module.exports = (app, pool) => {
-
   app.get("/admin/questions", checkAuth, (req, res) => {
     res.render("admQuestions", {
       "title"   : "Вопросы",
@@ -21,20 +18,17 @@ module.exports = (app, pool) => {
 
   app.post("/admin/listQuestions", checkAuth, (req, res) => {
     let showAnswered = req.body.showAnswered?req.body.showAnswered:null;
-
-
     let sqlQuery;
     if (showAnswered)
       sqlQuery = "SELECT * FROM questions ORDER BY ts DESC";
     else
-      sqlQuery = "SELECT * FROM questions WHERE answered=0 ORDER BY ts DESC";
+      sqlQuery = "SELECT * FROM questions WHERE answered=false ORDER BY ts DESC";
 
-    pool.query(sqlQuery, (err, rows) => {
-
+    pool.query(sqlQuery, (err, result) => {
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.render("elmListQuestions", { "questions" : rows });
+        res.render("elmListQuestions", { "questions" : result?result.rows:[] });
     });
   });
 
@@ -46,7 +40,8 @@ module.exports = (app, pool) => {
       pool.query({
         "text"   : "SELECT id FROM questions WHERE id=$1",
         "values" : [questionObj.id]
-      }, (err, rows) => {
+      }, (err, result) => {
+        let rows = result?result.rows:[];
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
           if (questionObj.delete) {
@@ -66,7 +61,6 @@ module.exports = (app, pool) => {
         };
       });
     }, (err) => {
-
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else

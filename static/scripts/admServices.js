@@ -10,19 +10,19 @@ window.addEventListener("load", function () {
   serviceList  = document.getElementById("serviceList");
   saveServices = document.getElementById("saveServices");
   newService   = document.getElementById("newService");
-  
+
   // Обработчики нажатия на кнопки выбора сервисов
   for( var i=0; i<svcButtons.length; i++) {
     svcButtons[i].addEventListener("click", listServicesFn, false);
   };
   listServicesFn(); // Загружаем услуги
-  
+
   // Обработчик нажатия на кнопку сохранения списка
   saveServices.addEventListener("click", saveServicesFn, false);
-  
+
   // Обработчик нажатия на кнопку нового сервиса
   newService.addEventListener("click", newServiceFn, false);
-  
+
 }, false);
 
 function listServicesFn() {
@@ -33,7 +33,7 @@ function listServicesFn() {
   } else {
     elmId = "type-" + svcTypeId;
   };
-  
+
   // подсвечиваем выбранный тип сервис
   for( var i=0; i<svcButtons.length; i++) {
     if (svcButtons[i].id == elmId)
@@ -41,7 +41,7 @@ function listServicesFn() {
     else
       svcButtons[i].classList.remove("selected");
   };
-  
+
   var req = new XMLHttpRequest();
   req.open("POST", "/admin/listServices");
   req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
@@ -61,7 +61,7 @@ function saveServicesFn() {
   var durationArray = document.getElementsByName("duration");
   var priceArray = document.getElementsByName("price");
   var deleteArray = document.getElementsByName("delete");
-  
+
   // Формируем список сервисов для сохранения
   var svcListObj = { "svcTypeId": svcTypeId, "svcArray": [] };
   for (var i=0; i<nameArray.length; i++) {
@@ -78,7 +78,7 @@ function saveServicesFn() {
       svcListObj.svcArray.push(svcObj);
     };
   };
-  
+
   // Отправляем запрос
   var req = new XMLHttpRequest();
   req.open("POST", "/admin/saveServices");
@@ -86,7 +86,7 @@ function saveServicesFn() {
   req.send(JSON.stringify(svcListObj));
   req.onreadystatechange = function() {
     if (req.readyState === 4) {
-      if (req.status === 200) window.location = "/admin";
+      if (req.status === 200) window.location = "/admin/services";
       if (req.status === 401) window.location="/admin";
       if (req.status === 500) serviceList.innerHTML = req.responseText;
     };

@@ -13,15 +13,13 @@ function checkAuth(req, res, next){
 module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin/masters", checkAuth, (req, res) => {
-
-    pool.query("SELECT * FROM masters ORDER BY id", (err, rows) => {
-
+    pool.query("SELECT * FROM masters ORDER BY id", (err, result) => {
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
         res.render("admMasters", {
           "title"   : "Мастера",
-          "rows"    : rows,
+          "rows"    : result?result.rows:[],
           "session" : req.session,
         });
     });
@@ -29,13 +27,13 @@ module.exports = (app, pool) => {
 
   app.post("/admin/saveMasters", checkAuth, (req, res) => {
     let mstArray = req.body;
-
     async.each(mstArray, (mstObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
       pool.query({
-        "text"   : "SELECT id FROM masters WHERE id = $1",
+        "text"   : "SELECT id FROM masters WHERE id=$1",
         "values" : [mstObj.id]
-      }, (err, rows) => {
+      }, (err, result) => {
+        let rows = result?result.rows:[];
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
           if (mstObj.delete) {
@@ -52,13 +50,12 @@ module.exports = (app, pool) => {
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO masters("name", "title", "email", "notify", "tel") VALUES ($1, $2, $3, $4, $5)",
+            "text"   : "INSERT INTO masters(name, title, email, notify, tel) VALUES ($1, $2, $3, $4, $5)",
             "values" : [mstObj.name, mstObj.title, mstObj.email, mstObj.notify, mstObj.tel]
           }, (err) => { cbEach(err) });
         };
       });
     }, (err) => {
-
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else

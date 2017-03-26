@@ -12,7 +12,7 @@ if (requests.length)
       th Удалить
     each row in requests
       tr(id=row.id)
-        td= row.selectedDate.toLocaleString()
+        td= row.selecteddate.toLocaleString()
         td= row.name
         td
           a(href="mailto:" + row.email)= row.email

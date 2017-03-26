@@ -1,5 +1,4 @@
 "use strict";
-const config       = require("./settings.json");
 const routes       = require("./routes");
 const path         = require("path");
 const http         = require("http");

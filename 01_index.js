@@ -64,7 +64,7 @@ module.exports = (app, pool) => {
       // список фотографий
       (cbParallel) => {
         let galleryList = {
-          "text"   : "SELECT id,fileName FROM gallery WHERE masterId=$1 ORDER BY created DESC",
+          "text"   : "SELECT id,filename FROM gallery WHERE masterid=$1 ORDER BY created DESC",
           "values" : [masterId]
         };
         pool.query(galleryList, (err, result) => { cbParallel(err, result?result.rows:[]) });
@@ -73,6 +73,8 @@ module.exports = (app, pool) => {
 
       let masterObj = result[0];
       let galleryObj = result[1];
+      console.log(masterObj);
+      console.log(galleryObj);
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       } else {

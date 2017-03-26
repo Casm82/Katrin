@@ -1,5 +1,4 @@
 "use strict";
-
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -13,27 +12,26 @@ module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin", (req, res) => {
     if (req.session && req.session.user) {
-
       async.parallel([
         // Список заявок
         (cbParallel) => {
-          pool.query("SELECT * FROM requests WHERE completed=0 ORDER BY selectedDate",
-          (err, rows) => {
-            cbParallel(err, rows);
+          pool.query("SELECT * FROM requests WHERE completed=false ORDER BY selectedDate",
+          (err, result) => {
+            cbParallel(err, result?result.rows:[]);
           });
         },
         // Список отзывов
         (cbParallel) => {
-          pool.query("SELECT * FROM feedbacks WHERE approved=0 ORDER BY ts DESC",
-          (err, rows) => {
-            cbParallel(err, rows);
+          pool.query("SELECT * FROM feedbacks WHERE approved=false ORDER BY ts DESC",
+          (err, result) => {
+            cbParallel(err, result?result.rows:[]);
           });
         },
         // Список неотвеченных вопросов
         (cbParallel) => {
-          pool.query("SELECT * FROM questions WHERE answered=0 ORDER BY ts DESC",
-          (err, rows) => {
-            cbParallel(err, rows);
+          pool.query("SELECT * FROM questions WHERE answered=false ORDER BY ts DESC",
+          (err, result) => {
+            cbParallel(err, result?result.rows:[]);
           });
         }
       ], (err, result) => {
@@ -58,7 +56,7 @@ module.exports = (app, pool) => {
   app.post("/session", (req, res) => {
     var login = req.body.username.toString();
     var pwd = req.body.password.toString();
-    if ((login==config.admin.login)&&(pwd==config.admin.pwd)) {
+    if ((login==process.env.KATRIN_ADMIN_LOGIN)&&(pwd==process.env.KATRIN_ADMIN_PWD)) {
       // прошёл аутентификацию
       req.session.user = login;
       res.redirect("/admin");

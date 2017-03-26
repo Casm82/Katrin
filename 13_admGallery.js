@@ -1,5 +1,4 @@
 "use strict";
-
 var async = require("async");
 var path = require("path");
 
@@ -11,11 +10,8 @@ function checkAuth(req, res, next){
 }
 
 module.exports = (app, pool) => {
-  //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin/gallery/:masterId", checkAuth, (req, res) => {
     let masterId = req.params.masterId;
-
-
     async.parallel([
       // информация о мастере
       (cbParallel) => {
@@ -23,20 +19,20 @@ module.exports = (app, pool) => {
           "text"   : "SELECT * FROM masters WHERE id=$1",
           "values" : [masterId]
         };
-        pool.query(masterInfo, (err, rows) => {
+        pool.query(masterInfo, (err, result) => {
+          let rows = result?result.rows:[];
           cbParallel(err, (rows&&rows.length)?rows[0]:{} );
         });
       },
       // список фотографий
       (cbParallel) => {
         let galleryList = {
-          "text"   : "SELECT id,fileName FROM gallery WHERE masterId=$1 ORDER BY created DESC",
+          "text"   : "SELECT id,filename FROM gallery WHERE masterId=$1 ORDER BY created DESC",
           "values" : [masterId]
         };
-        pool.query(galleryList, (err, rows) => { cbParallel(err, rows) });
+        pool.query(galleryList, (err, result) => { cbParallel(err, result?result.rows:[]) });
       }
     ], (err, result) => {
-
       let masterObj = result[0];
       let galleryObj = result[1];
       if (err) {
@@ -53,7 +49,6 @@ module.exports = (app, pool) => {
   });
 
   app.post("/admin/gallery", checkAuth, (req, res) => {
-
     let currDate = new Date();
     let masterId = req.body.masterId;
     let deleteArray = [];
@@ -85,10 +80,13 @@ module.exports = (app, pool) => {
       (cbParallel) => {
         if (req.files&&req.files.workImg) {
           let gallerySave = {
-            "text"   : "INSERT INTO(masterId, fileName) gallery VALUES ($1, $2)",
+            "text"   : "INSERT INTO gallery(masterid, filename) VALUES ($1, $2)",
             "values" : [masterId, fileName]
           };
-          pool.query(gallerySave, (err) => { cbParallel(err) });
+          pool.query(gallerySave, (err) => {
+            if (err) { console.error(err); console.error(gallerySave); };
+            cbParallel(err);
+          });
         } else {
           cbParallel();
         };
@@ -97,7 +95,11 @@ module.exports = (app, pool) => {
       (cbParallel) => {
         if (deleteArray.length) {
           let deleteTxt = deleteArray.join(",");
-          pool.query(`DELETE FROM gallery WHERE id IN (${deleteTxt})`, (err) => { cbParallel(err) });
+          let deleteQuery = `DELETE FROM gallery WHERE id IN (${deleteTxt})`;
+          pool.query(deleteQuery, (err) => {
+            if (err) { console.error(err); console.error(deleteQuery); };
+            cbParallel(err)
+          });
         } else {
           cbParallel();
         };

@@ -1,17 +1,15 @@
 "use strict";
-const config = require("./settings.json");
 const async = require("async");
 const nodemailer = require("nodemailer");
 
 module.exports = (app, pool) => {
   app.get("/enrollment", (req, res) => {
     let title = "Персональные услуги";
-
-    pool.query("SELECT id,type,name,duration,price FROM service_list ORDER BY type,id", (err, rows) => {
-
+    pool.query("SELECT id,type,name,duration,price FROM service_list ORDER BY type,id", (err, result) => {
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       } else {
+        let rows = result?result.rows:[];
         if (rows&&rows.length) {
           let servicesObj = {};
           rows.forEach((row) => {
@@ -35,19 +33,17 @@ module.exports = (app, pool) => {
       pool.query({
         "text"   : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
         "values" : [serviceId]
-      }, (err, rows) => {
-
+      }, (err, result) => {
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
+          let rows = result?result.rows:[];
           let serviceObj = (rows&&rows.length)?rows[0]:{}; // выбранная услуга
-
           // Календарь
           let curDate = new Date(); // текущая дата и дата в прошлом месяце
           let prevDate = new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate());
 
           let leapYear = curDate.getFullYear()%4?false:true;  // високосный год
-
           // массив кол-ва дней в месяцах и названия месяцев
           let daysInMonth = [31, leapYear?29:28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
           let monthArray = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
@@ -89,13 +85,13 @@ module.exports = (app, pool) => {
 
     if (serviceId) {
       pool.query({
-        "text"    : "SELECT id,name,duration,price FROM service_list WHERE id=?",
+        "text"   : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
         "values" : [serviceId]
-      }, (err, rows) => {
-
+      }, (err, result) => {
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
+          let rows = result?result.rows:[];
           let serviceObj = (rows&&rows.length)?rows[0]:{}; // выбранная услуга
           res.render("enrollPerson", { title, serviceObj, selectedDate } );
         };
@@ -115,13 +111,12 @@ module.exports = (app, pool) => {
     let selectedDate = (req.body.selectedDate&&req.body.selectedDate.replace(/\D/g,""))?new Date(Number(req.body.selectedDate.replace(/\D/g,""))):new Date();
     let regDate = new Date();
 
-
     async.parallel([
       (cbParallel) => {
         // записываем запрос в БД
         pool.query({
-          "text"    : "INSERT INTO (name, email, tel, message, serviceid, selecteddate, regdate) requests VALUES ($1, $2, $3, $4, $5, $6, $7)",
-          "values" : [{ name, email, tel, message, serviceId, selectedDate, regDate }]
+          "text"   : "INSERT INTO (name,email,tel,message,serviceid,selecteddate,regdate) requests VALUES ($1, $2, $3, $4, $5, $6, $7)",
+          "values" : [name, email, tel, message, serviceId, selectedDate, regDate]
         }, (err) => {
           if (err) console.error(err);
           if (err)
@@ -133,21 +128,20 @@ module.exports = (app, pool) => {
       },
       // Получаем список сотрудников для оповещения
       (cbParallel) => {
-        pool.query("SELECT name,email FROM masters WHERE notify=1", (err, rows) => {
-          cbParallel(err, rows);
+        pool.query("SELECT name,email FROM masters WHERE notify=true", (err, result) => {
+          cbParallel(err, result?result.rows:[]);
         });
       },
       // Получаем описание услуги
       (cbParallel) => {
         pool.query({
-          "text"    : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
+          "text"   : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
           "values" : [serviceId]
-        }, (err, rows) => {
-          cbParallel(err, rows);
+        }, (err, result) => {
+          cbParallel(err, result?result.rows:[]);
         });
       }
     ], (err, result) => {
-
       let emails = result[1];
       let serviceObj = (result[2]&&result[2].length)?result[2][0]:{}; // выбранная услуга
 
