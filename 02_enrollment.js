@@ -5,21 +5,26 @@ const nodemailer = require("nodemailer");
 module.exports = (app, pool) => {
   app.get("/enrollment", (req, res) => {
     let title = "Персональные услуги";
-    pool.query("SELECT id,type,name,duration,price FROM service_list ORDER BY type,id", (err, result) => {
+    pool.query("SELECT s.id, t.id as type, t.name as cat, s.name, s.duration, s.price FROM service_list s, service_type t WHERE s.type=t.id ORDER BY t.id,s.id", (err, result) => {
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       } else {
         let rows = result?result.rows:[];
         if (rows&&rows.length) {
           let servicesObj = {};
+          let serviceType = {};
           rows.forEach((row) => {
             let serviceDesc = {"id": row.id, "name": row.name, "duration": row.duration, "price": row.price};
+
             if (!servicesObj[row.type])
               servicesObj[row.type] = [serviceDesc];
             else
               servicesObj[row.type].push(serviceDesc);
+
+            if (!serviceType[row.type]) serviceType[row.type] = row.cat;
+
           });
-          res.render("enrollService", { title, servicesObj });
+          res.render("enrollService", { title, servicesObj, serviceType });
         };
       };
     });
@@ -28,7 +33,6 @@ module.exports = (app, pool) => {
   app.get("/enrollment/:serviceId", (req, res) => {
     let title = "Выбор даты";
     let serviceId = req.params.serviceId?req.params.serviceId.toString().replace(/\D/g,""):null;
-
     if (serviceId) {
       pool.query({
         "text"   : "SELECT id,name,duration,price FROM service_list WHERE id=$1",
@@ -42,6 +46,7 @@ module.exports = (app, pool) => {
           // Календарь
           let curDate = new Date(); // текущая дата и дата в прошлом месяце
           let prevDate = new Date(curDate.getFullYear(), curDate.getMonth() - 1, curDate.getDate());
+          let nextDate = new Date(curDate.getFullYear(), curDate.getMonth() + 1, curDate.getDate());
 
           let leapYear = curDate.getFullYear()%4?false:true;  // високосный год
           // массив кол-ва дней в месяцах и названия месяцев
@@ -49,10 +54,10 @@ module.exports = (app, pool) => {
           let monthArray = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
 
           // текущий день и месяц
-          let dayNow = curDate.getDate(); // текущий день месяца
-          let curDoW = curDate.getDay();  // текущий день недели
-          let monthNum = curDate.getMonth();
-          let monthTxt = monthArray[curDate.getMonth()];
+          let dayNow = curDate.getDate();     // текущий день месяца
+          let curDoW = curDate.getDay();      // текущий день недели
+          let monthNum = curDate.getMonth();  // текущий номер месяца
+          let monthTxt = monthArray[curDate.getMonth()];  // текстовое название месяца
 
           let maxDaysCurr = daysInMonth[curDate.getMonth()];  // кол-во дней в текущем месяце
           let maxDaysPrev = daysInMonth[prevDate.getMonth()]; // кол-во дней в прошлом месяце
@@ -60,17 +65,34 @@ module.exports = (app, pool) => {
           // Определяем день недели первого числа месяца
           let firstDoW = new Date(curDate.getFullYear(), curDate.getMonth(), 1).getDay();
           if (firstDoW==0) firstDoW=7;
+
           let calGrid = [];
+          let calItem;
           let dayNum=1;
-          for (let n=1; n<42; n++) {
-            if (n < firstDoW) calGrid.push({"n": maxDaysPrev-firstDoW+n+1, "curMonth": false});
-            if (n >= firstDoW) {
-              let calDay = dayNum++%maxDaysCurr; // 0,1,..31
-              let wrapDay = calDay?calDay:maxDaysCurr;  // 1,2,...31
-              calGrid.push({"n": wrapDay, "curMonth": wrapDay>=dayNow});
+          for (let n=1; n<49; n++) {
+            if (n < firstDoW) {
+              calItem={"d": maxDaysPrev-firstDoW+n+1, "m": prevDate.getMonth(), "t": "past"};
+            } else {
+              let calDay = dayNum++%maxDaysCurr;       // 0,1,..31
+              let wrapDay = calDay?calDay:maxDaysCurr; // 1,2,...31
+
+              if ((n >= firstDoW)&&(n < maxDaysCurr+firstDoW)) {
+                calItem={"d": wrapDay, "m": curDate.getMonth(), "t": "current month"};
+              };
+
+              if (n >= maxDaysCurr+firstDoW) {
+                calItem={"d": wrapDay, "m": nextDate.getMonth(), "t": "next month"};
+              };
             };
+            calGrid.push(calItem);
           };
-          res.render("enrollDate", { title, serviceObj, calGrid, dayNow, monthNum, monthTxt });
+
+          res.render("enrollDate", {
+            "title"      : title,
+            "serviceObj" : serviceObj,
+            "calGrid"    : calGrid,
+            "curDate"    : curDate
+          });
         };
       });
     } else {

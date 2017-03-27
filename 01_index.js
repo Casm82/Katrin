@@ -29,7 +29,7 @@ module.exports = (app, pool) => {
       },
       // Получаем информацию о мастерах
       (cbParallel) => {
-         pool.query("SELECT * FROM masters ORDER BY id", (err, result) => {
+         pool.query("SELECT * FROM masters WHERE main_page=true ORDER BY id", (err, result) => {
           cbParallel(err, result?result.rows:[]);
          });
       }

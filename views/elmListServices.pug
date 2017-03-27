@@ -13,26 +13,26 @@ table
       th Стоимость, руб.
       th Удалить
     tr(id="svc-0" hidden="hidden")
-      td.top
+      td
         input(name="name")
-      td.top
+      td
         textarea(name="description")
       td.center
         input.num(name="duration" type="number")
       td.center
-        input.num(name="price" type="number")
+        input.num(name="price" type="text")
       td.center
         input(type="checkbox" name="delete")
     each row in rows
       tr(id="svc-" + row.id)
-        td.top
+        td
           input(value=row.name name="name")
-        td.top
+        td
           textarea(name="description")=row.description
         td.center
           input.num(value=row.duration name="duration" type="number")
         td.center
-          input.num(value=row.price name="price" type="number")
+          input.num(value=row.price name="price" type="text")
         td.center
           input(type="checkbox" name="delete")
         

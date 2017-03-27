@@ -25,23 +25,26 @@ block content
         table.center
           tbody#mastersTable
             tr
-              th Имя
-              th Должность
+              th Фото
+              th Имя/Должность
               th Галерея
               th E-mail
               th Оповещения
+              th Главная страница
               th Телефон
               th Удалить
             tr(id="mst-0" hidden="hidden")
+              td Фото
               td
                 input(name="name" size="20")
-              td
                 input(name="title" size="20")
-              td 12
+              td Работы
               td
                 input(name="email" size="15")
               td
                 input(type="checkbox" name="notify")
+              td
+                input(type="checkbox" name="main_page")
               td
                 input(name="tel" size="10")
               td
@@ -49,8 +52,9 @@ block content
             each row in rows
               tr(id="mst-" + row.id)
                 td
-                  input(value=row.name name="name" size="20")
+                  img(src="/images/masters/" + row.photo alt="фотография" width="92" heigth="92")
                 td
+                  input(value=row.name name="name" size="20")
                   input(value=row.title name="title" size="20")
                 td
                   a(href="/admin/gallery/"+row.id) Работы
@@ -61,6 +65,11 @@ block content
                     input(type="checkbox" name="notify" checked)
                   else
                     input(type="checkbox" name="notify")
+                td
+                  if (row.main_page)
+                    input(type="checkbox" name="main_page" checked)
+                  else
+                    input(type="checkbox" name="main_page")
                 td
                   input(value=row.tel name="tel" size="10")
                 td

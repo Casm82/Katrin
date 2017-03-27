@@ -7,7 +7,7 @@ table {
 }
 
 #calendar td, #clock td {
-  width: 32px;
+  width: 48px;
   height: 32px;
   border: 2px solid grey;
 }
@@ -16,16 +16,15 @@ table {
   background-color: wheat;
 }
 
-.extMonth {
+.pastTime {
   color: grey;
 }
 
-.currDay, .curMonth {
-  font-weight: bold;
+.currDay, .futureTime {
   cursor: pointer;
 }
 
-.selected, .currDay:hover, .curMonth:hover {
+.selected, .currDay:hover, .futureTime:hover {
   background-color: yellow;
 }
 

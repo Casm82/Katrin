@@ -56,6 +56,9 @@ input[name^="shadow-"]:checked + .button {
 input[name^="shadow-"]:checked + .SlideKey1 ~ #slider .SlideBox1,
 input[name^="shadow-"]:checked + .SlideKey2 ~ #slider .SlideBox2,
 input[name^="shadow-"]:checked + .SlideKey3 ~ #slider .SlideBox3,
-input[name^="shadow-"]:checked + .SlideKey4 ~ #slider .SlideBox4 {
+input[name^="shadow-"]:checked + .SlideKey4 ~ #slider .SlideBox4,
+input[name^="shadow-"]:checked + .SlideKey5 ~ #slider .SlideBox5,
+input[name^="shadow-"]:checked + .SlideKey6 ~ #slider .SlideBox6,
+input[name^="shadow-"]:checked + .SlideKey7 ~ #slider .SlideBox7 {
   display: block;
 }

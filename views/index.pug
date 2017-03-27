@@ -45,36 +45,32 @@ block content
           div
             strong Добро пожаловать!
           p Рады приветствовать Вас на сайте нашего салона красоты Кэтрин! Наша команда квалифицированных специалистов готова прийти на помощь Вам с любыми внешними преображениями, даже самыми смелыми. На сайте Вы можете ознакомиться с услугами и их стоимостью, просмотреть представленный в салоне перечень профессиональной косметики, которую можно приобрести в салоне, а так же записаться онлайн на любую услугу.
-          p Ждем вас в салоне красоты Кэтрин!
+          p Ждем Вас в салоне красоты Кэтрин!
         div#enrollment
           a(href="/enrollment") Онлайн запись
   section#services
     div#servicesGrid
       div.sericeRow
-        a(href="/#goods")
-          div.sericePink Уход
-          div
-            img(src="/images/care.jpg")
-        a(href="/price/face")
-          div.sericeBlack Лицо
-          div
-            img(src="/images/face.jpg")
+        div.sericePink Уход
+        div
+          img(src="/images/care.jpg")
+        div.sericeBlack Лицо
+        div
+          img(src="/images/face.jpg")
       div.sericeRow
-        a(href="/price/hair")
-          div
-            img(src="/images/hair.jpg")
-          div.sericeBlack Волосы
-        a(href="/price/nails")
-          div
-            img(src="/images/nails.jpg")
-          div.sericePink Ногти
+        div
+          img(src="/images/hair.jpg")
+        div.sericeBlack Волосы
+        div
+          img(src="/images/nails.jpg")
+        div.sericePink Ногти
   section#masters
     div#mastersGrid
       each master,idx in masters
         -var cellClass = (idx%2)?"rightCell":"leftCell"
         div.masterCell(class=cellClass)
           div
-            img(src="/images/masters/" + master.id + ".jpg" alt="фотография" width="222" heigth="222")
+            img(src="/images/masters/" + master.photo alt="фотография" width="222" heigth="222")
           div.masterDescription
             div.masterName= master.name
             div.masterHr

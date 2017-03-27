@@ -22,25 +22,28 @@ block content
             th Пт
             th Сб
             th Вс
-          each w in [0,1,2,3,4]
+          each w in [0,1,2,3,4,5]
             tr
               each d in [0,1,2,3,4,5,6]
                 - var gridNum = w*7+d;
                 - var gridClass;
-                if (calGrid[gridNum].n == dayNow)
-                  - gridClass = "currDay curMonth"
+                if ((calGrid[gridNum].d == curDate.getDate())&&(calGrid[gridNum].m == curDate.getMonth()))
+                  - gridClass = "currDay futureTime"
                 else
-                  if (calGrid[gridNum].curMonth)
-                    - gridClass = "curMonth"
+                  if (((calGrid[gridNum].d > curDate.getDate())&&(calGrid[gridNum].m == curDate.getMonth()))||((calGrid[gridNum].d < curDate.getDate())&&(calGrid[gridNum].m > curDate.getMonth())))
+                    - gridClass = "futureTime"
                   else
-                    - gridClass = "extMonth"
-                td(class=gridClass)= calGrid[gridNum].n
+                    - gridClass = "pastTime"
+                td(class=gridClass data-d=calGrid[gridNum].d data-m=calGrid[gridNum].m)
+                  span= calGrid[gridNum].d
+                  span /
+                  span= calGrid[gridNum].m+1
         table#clock
           each m in ["00","30"]
             tr
               each h in ["10","11","12","13","14","15","16","17","18"]
                 td.time.inavilable(data-hour=h data-min=m)= h+":"+m
-      div#serviceDesc(data-svcid=serviceObj.id data-monthnum=monthNum)
+      div#serviceDesc(data-svcid=serviceObj.id)
         div= serviceObj.name
         div
           span= serviceObj.duration

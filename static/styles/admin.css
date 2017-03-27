@@ -12,6 +12,11 @@ section {
   width: 1024px;
 }
 
+#buttonsNav {
+  width: 48em;
+  margin: 0 auto;
+}
+
 #menuButtons {
   position: fixed;
   top: 4em;
@@ -33,7 +38,6 @@ section {
 
 .svcButton {
   padding: 0.5em;
-  min-width: 10em;
   margin: 0.5em;
   background-color: wheat;
   border-radius: 4px;
@@ -84,6 +88,6 @@ td {
 }
 
 textarea {
-  width: 25em;
-  height: 8em;
+  width: 20em;
+  height: 3em;
 }

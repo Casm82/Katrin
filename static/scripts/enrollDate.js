@@ -15,23 +15,23 @@ window.addEventListener("load", function () {
   proceed = document.getElementById("proceed");
   selectedDate = document.getElementById("selectedDate");
   serviceDesc = document.getElementById("serviceDesc");
-  days = document.getElementsByClassName("curMonth");
+  days = document.getElementsByClassName("futureTime");
   times = document.getElementsByClassName("time");
   
   proceed.disabled = true;
-  selectedMonth = serviceDesc.dataset.monthnum;
   
   for (var i=0; i < days.length; i++) {
     days[i].addEventListener("click", daySelectedFn, false);
   };
   
-  proceed.addEventListener("click", function (){
+  proceed.addEventListener("click", function () {
     window.location="/enrollment/" + serviceDesc.dataset.svcid + "/" + selectedDateObj.getTime();
   }, false)
 }, false);
 
 function daySelectedFn() {
-  selectedDay = this.textContent;
+  selectedDay = this.dataset.d;
+  selectedMonth = this.dataset.m;
   proceed.disabled = true;
   selectedDate.textContent = "Выберите время";
   

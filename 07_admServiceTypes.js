@@ -1,6 +1,5 @@
 "use strict";
 
-var pg = require("pg");
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -12,46 +11,47 @@ function checkAuth(req, res, next){
 
 module.exports = (app, pool) => {
   //////////////////////////////////////////////////////////////////////////////////////////
-  app.get("/admin/masters", checkAuth, (req, res) => {
-    pool.query("SELECT * FROM masters ORDER BY id", (err, result) => {
+  app.get("/admin/serviceType", checkAuth, (req, res) => {
+    pool.query("SELECT * FROM service_type ORDER BY id", (err, result) => {
+      let rows = result?result.rows:[];
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.render("admMasters", {
-          "title"   : "Мастера",
-          "rows"    : result?result.rows:[],
+        res.render("admServiceTypes", {
+          "title"   : "Список категорий услуг",
+          "rows"    : rows,
           "session" : req.session,
         });
     });
   });
 
-  app.post("/admin/saveMasters", checkAuth, (req, res) => {
-    let mstArray = req.body;
-    async.each(mstArray, (mstObj, cbEach) => {
+  app.post("/admin/serviceType", checkAuth, (req, res) => {
+    let typesArray = req.body.typesArray;
+    async.each(typesArray, (typeObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
       pool.query({
-        "text"   : "SELECT id FROM masters WHERE id=$1",
-        "values" : [mstObj.id]
+        "text"   : "SELECT id FROM service_type WHERE id=$1",
+        "values" : [typeObj.id]
       }, (err, result) => {
         let rows = result?result.rows:[];
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
-          if (mstObj.delete) {
+          if (typeObj.delete) {
             pool.query({
-              "text"   : "DELETE FROM masters WHERE id=$1",
-              "values" : [mstObj.id]
+              "text"   : "DELETE FROM service_type WHERE id=$1",
+              "values" : [typeObj.id]
             }, (err) => { cbEach(err) });
           } else {
             pool.query({
-              "text"   : "UPDATE masters SET name=$1,title=$2,email=$3,notify=$4,main_page=$5,tel=$6 WHERE id=$7",
-              "values" : [mstObj.name, mstObj.title, mstObj.email, mstObj.notify, mstObj.main_page, mstObj.tel, mstObj.id]
+              "text"   : "UPDATE service_type SET name=$1 WHERE id=$2",
+              "values" : [typeObj.name, typeObj.id]
             }, (err) => { cbEach(err) });
           };
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO masters(name, title, email, notify, main_page, tel) VALUES ($1, $2, $3, $4, $5)",
-            "values" : [mstObj.name, mstObj.title, mstObj.email, mstObj.notify, mstObj.main_page, mstObj.tel]
+            "text"   : "INSERT INTO service_type(name) VALUES ($1)",
+            "values" : [typeObj.name]
           }, (err) => { cbEach(err) });
         };
       });
