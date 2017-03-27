@@ -3,15 +3,9 @@
 window.addEventListener("load", function () {
   // Навигация - текст
   var navTextItems = document.getElementsByClassName("navText");
-  // Навигация - радиокнопки
-  var radioNavItems =  document.getElementsByName("navRadio");
   // Навигация - нажатие на текст
   for (var i=0; i<navTextItems.length; i++) {
     navTextItems[i].addEventListener("click", scrollToNavItem, false);
-  };
-  // Навигация - выбор радиокнопки
-  for (var i=0; i<radioNavItems.length; i++) {
-    radioNavItems[i].addEventListener("change", scrollToNavItem, false);
   };
   // Переход между разделами
   function scrollToNavItem () {
@@ -19,11 +13,6 @@ window.addEventListener("load", function () {
       var navigateTo = this.dataset.nav;
       let navItemElm = document.getElementById(navigateTo);
       navItemElm.scrollIntoView({block: "start", behavior: "smooth"});
-      // Синхронизируем радиокнопки
-      for (var i=0; i<radioNavItems.length; i++) {
-        var radioNavValue = radioNavItems[i].dataset?radioNavItems[i].dataset.nav:null;
-        radioNavItems[i].checked = radioNavValue == navigateTo;
-      };
     };
   };
 

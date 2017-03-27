@@ -5,31 +5,13 @@ block scripts
   script(src="/scripts/index.js")
 block content
   nav
-    table
-      tr
-        td.navText(data-nav="main") Главная
-        td
-          input(type="radio" name="navRadio" data-nav="main")
-      tr
-        td.navText(data-nav="services") Услуги
-        td
-          input(type="radio" name="navRadio" value="services" data-nav="services")
-      tr
-        td.navText(data-nav="masters") Мастера
-        td
-          input(type="radio" name="navRadio" value="masters" data-nav="masters")
-      tr
-        td.navText(data-nav="reviews") Отзывы
-        td
-          input(type="radio" name="navRadio" value="reviews" data-nav="reviews")
-      tr
-        td.navText(data-nav="goods") Товары
-        td
-          input(type="radio" name="navRadio" value="goods" data-nav="goods")
-      tr
-        td.navText(data-nav="contacts") Контакты
-        td
-          input(type="radio" name="navRadio" value="contacts" data-nav="contacts")
+    ul
+      li.navText(data-nav="main") Главная
+      li.navText(data-nav="services") Услуги
+      li.navText(data-nav="masters") Мастера
+      li.navText(data-nav="reviews") Отзывы
+      li.navText(data-nav="goods") Товары
+      li.navText(data-nav="contacts") Контакты
   header#main
     div#headerCenter
       div#logo

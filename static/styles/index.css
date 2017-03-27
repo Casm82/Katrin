@@ -13,23 +13,12 @@ nav {
   height: 8em;
 }
 
-nav td { text-align: right; }
-
-nav input[type="radio"] {
-  vertical-align: middle;
-}
-
-nav input[type="radio"] {
-  margin: 0;
-}
-
-.navText {
+nav ul { list-style: none; }
+nav li {
+  text-align: right;
+  margin: 0.5em 0;
   font-variant: small-caps;
   cursor: pointer;
-}
-
-.navText:hover {
-  opacity: 1;
 }
 
 .invisible {
@@ -60,6 +49,7 @@ nav input[type="radio"] {
   background-image: linear-gradient(to right, #fbebdb, #e5f4fb);
   width: 100%;
   overflow: auto;
+  padding-bottom: 2em;
 }
 
 #masters {

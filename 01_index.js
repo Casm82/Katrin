@@ -73,8 +73,6 @@ module.exports = (app, pool) => {
 
       let masterObj = result[0];
       let galleryObj = result[1];
-      console.log(masterObj);
-      console.log(galleryObj);
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       } else {
