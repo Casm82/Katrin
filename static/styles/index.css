@@ -10,7 +10,7 @@ nav {
   position: fixed;
   margin: auto;
   z-index: 10;
-  height: 8em;
+  height: 16em;
 }
 
 nav ul { list-style: none; }

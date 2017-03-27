@@ -4,15 +4,15 @@ var questionsList;
 
 window.addEventListener("load", function () {
   questionsList = document.getElementById("questionsList");
-  
+
   // Обработчик нажатия на кнопку сохранения списка
   var saveList = document.getElementById("saveList");
   saveList.addEventListener("click", saveListFn, false);
-  
+
   // Обработчик нажатия на чекбокс "Показывать отвеченные вопросы"
   showAnswered = document.getElementById("showAnswered");
   showAnswered.addEventListener("change", listQuestionsFn, false);
-  
+
   listQuestionsFn();
 }, false);
 
@@ -33,7 +33,7 @@ function listQuestionsFn() {
 function saveListFn() {
   var answeredArray = document.getElementsByName("answered");
   var deleteArray = document.getElementsByName("delete");
-  
+
   // Формируем список отзывов для сохранения
   var questionArray = [];
   for (var i=0; i<answeredArray.length; i++) {
@@ -47,7 +47,7 @@ function saveListFn() {
       questionArray.push(questionObj);
     };
   };
-  
+
   // Отправляем запрос
   var req = new XMLHttpRequest();
   req.open("POST", "/admin/saveQuestions");

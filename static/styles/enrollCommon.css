@@ -9,7 +9,7 @@ section {
 
 #board {
   background-color: white;
-  height: 45em;
+  min-height: 45em;
   background-image: url(/images/wall_services.png);
   margin: 0 auto;
   width: 980px;

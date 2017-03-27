@@ -1,0 +1,38 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/enrollService.css")
+  link(rel="stylesheet" type="text/css" href="/styles/enrollCommon.css")
+block content
+  section
+    div#back
+      a(href="/" title="На главную страницу" rel="prev")
+        img(src="/images/back.png")
+        span Назад
+    div#board
+      div.title= title
+
+      each svcType, typeIdx in serviceType
+        if (typeIdx==1)
+          input(id="shadow-slide"+typeIdx name="shadow-slide" type="radio" checked)
+        else
+          input(id="shadow-slide"+typeIdx name="shadow-slide" type="radio")
+        label(class="button SlideKey"+typeIdx for="shadow-slide"+typeIdx)=svcType
+
+      each svcType, typeIdx in serviceType
+        div(id="slider")
+          div(class="elements")
+            div(class="element SlideBox"+typeIdx)
+              table
+                each svcObj, type in servicesObj
+                  if (type == typeIdx)
+                    each svc in svcObj
+                      tr
+                        td= svc.name
+                        td
+                          span= svc.duration
+                          span &nbspмин.
+                        td
+                          span= svc.price
+                          span &nbspруб.
+                        td.enroll
+                          a(href="/enrollment/" + svc.id) Записаться

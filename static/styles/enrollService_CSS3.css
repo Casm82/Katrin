@@ -1,0 +1,64 @@
+/* КОНТЕНТ: слайдер */
+#slider {
+  text-align: left;
+}
+
+/* контейнер набора слайдов */
+#slider .elements {
+  position: relative;
+}
+
+/* контейнер отдельного слайда */
+#slider .element {
+  display: none;                     /* слайды изначально не видны                */
+  height: 100%;                      /* слайды размером на всю клиентскую область */
+  width: 100%;                       /* слайды размером на всю клиентскую область */
+  position: absolute;                /* слайды размещены один над другим          */
+  padding: 15px;
+}
+
+.element table {
+  margin: 0 auto;
+  border-spacing: 1em 0.5em;
+}
+
+/* НАВИГАТОРЫ: теневые флажки */
+input[name^="shadow-"] {
+  display: none;
+}
+
+/* НАВИГАТОРЫ: кнопка */
+.button {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0.1em 0.5em;
+}
+
+.enroll {
+  cursor: pointer;
+  display: inline-block;
+  background-color: #FAEECD;
+  border-radius: 4px;
+  padding: 0.25em 0.5em;
+  border: 1px solid grey;
+}
+
+.enroll:hover {
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+/* кнопка выбрана */
+input[name^="shadow-"]:checked + .button {
+  background: yellow;
+}
+
+/* кнопка слайда выбрана - показываем её слайд */
+input[name^="shadow-"]:checked + .SlideKey1 ~ #slider .SlideBox1,
+input[name^="shadow-"]:checked + .SlideKey2 ~ #slider .SlideBox2,
+input[name^="shadow-"]:checked + .SlideKey3 ~ #slider .SlideBox3,
+input[name^="shadow-"]:checked + .SlideKey4 ~ #slider .SlideBox4,
+input[name^="shadow-"]:checked + .SlideKey5 ~ #slider .SlideBox5,
+input[name^="shadow-"]:checked + .SlideKey6 ~ #slider .SlideBox6,
+input[name^="shadow-"]:checked + .SlideKey7 ~ #slider .SlideBox7 {
+  display: block;
+}

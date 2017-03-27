@@ -17,13 +17,13 @@ window.addEventListener("load", function () {
   serviceDesc = document.getElementById("serviceDesc");
   days = document.getElementsByClassName("futureTime");
   times = document.getElementsByClassName("time");
-  
+
   proceed.disabled = true;
-  
+
   for (var i=0; i < days.length; i++) {
     days[i].addEventListener("click", daySelectedFn, false);
   };
-  
+
   proceed.addEventListener("click", function () {
     window.location="/enrollment/" + serviceDesc.dataset.svcid + "/" + selectedDateObj.getTime();
   }, false)
@@ -34,14 +34,14 @@ function daySelectedFn() {
   selectedMonth = this.dataset.m;
   proceed.disabled = true;
   selectedDate.textContent = "Выберите время";
-  
+
   for (var i=0; i < days.length; i++) {
     if (this == days[i])
       days[i].classList.add("selected");
     else
       days[i].classList.remove("selected");
   };
-  
+
   for (var i=0; i < times.length; i++) {
     times[i].classList.remove("inavilable");
     times[i].classList.add("available");

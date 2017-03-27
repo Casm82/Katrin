@@ -3,31 +3,49 @@ const async = require("async");
 const nodemailer = require("nodemailer");
 
 module.exports = (app, pool) => {
+  // Страница выбора услуги
   app.get("/enrollment", (req, res) => {
     let title = "Персональные услуги";
-    pool.query("SELECT s.id, t.id as type, t.name as cat, s.name, s.duration, s.price FROM service_list s, service_type t WHERE s.type=t.id ORDER BY t.id,s.id", (err, result) => {
+    pool.query("SELECT * FROM service_type", (err, result) => {
+      if (err) {
+        res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
+      } else {
+        let rows = result?result.rows:[];
+        res.render("enrollService", { title, rows });
+      };
+    });
+  });
+
+  // Загружает список услуг
+  app.post("/enrollment", (req, res) => {
+    let serviceType = req.body.serviceType?Number(req.body.serviceType.toString().replace(/\D/g,"")):null;
+    if (serviceType) {
+    let sqlQuery = {
+      "text"   : "SELECT id,name,duration,price FROM service_list WHERE type=$1",
+      "values" : [serviceType]
+    };
+    pool.query(sqlQuery, (err, result) => {
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       } else {
         let rows = result?result.rows:[];
         if (rows&&rows.length) {
           let servicesObj = {};
-          let serviceType = {};
           rows.forEach((row) => {
             let serviceDesc = {"id": row.id, "name": row.name, "duration": row.duration, "price": row.price};
-
             if (!servicesObj[row.type])
               servicesObj[row.type] = [serviceDesc];
             else
               servicesObj[row.type].push(serviceDesc);
-
-            if (!serviceType[row.type]) serviceType[row.type] = row.cat;
-
           });
-          res.render("enrollService", { title, servicesObj, serviceType });
+          console.log(servicesObj);
+          res.render("elmListServices", { servicesObj });
         };
       };
     });
+    } else {
+      res.status(500).send("Не указан идентификатор группы услуг");
+    };
   });
 
   app.get("/enrollment/:serviceId", (req, res) => {
@@ -136,10 +154,12 @@ module.exports = (app, pool) => {
     async.parallel([
       (cbParallel) => {
         // записываем запрос в БД
-        pool.query({
-          "text"   : "INSERT INTO (name,email,tel,message,serviceid,selecteddate,regdate) requests VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        let sqlQuery = {
+          "text"   : "INSERT INTO requests (name,email,tel,message,serviceid,selecteddate,regdate) VALUES ($1, $2, $3, $4, $5, $6, $7)",
           "values" : [name, email, tel, message, serviceId, selectedDate, regDate]
-        }, (err) => {
+        };
+
+        pool.query(sqlQuery, (err) => {
           if (err) console.error(err);
           if (err)
             res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
@@ -172,29 +192,32 @@ module.exports = (app, pool) => {
       emails.forEach((obj) => { emailToArray.push(`${obj.name} <${obj.email}>`) });
 
       // Создаём объект SMTP транспорта
-      let transporter = nodemailer.createTransport(config.mail);
+      let transporter = nodemailer.createTransport({
+        "service": process.env.KATRIN_MAIL_SERVICE,
+        "auth"   : { "user": process.env.KATRIN_MAIL_LOGIN, "pass": process.env.KATRIN_MAIL_PWD },
+        "debug"  : true
+      });
 
       // Объект сообщения
       let mailMessage = {
+        "from"    : "katrin-app@yandex.ru",
         "to"      : emailToArray.join(","),
         "subject" : "Новая заявка",
         "text"    : `Поступила новая заявка.\nОтправитель: ${name}\nКонтактный телефон: ${tel}\nСообщение: ${message}\nУслуга: ${serviceObj.name}\nСтоимость: ${serviceObj.price}\nДлительность:${serviceObj.duration} мин.\nВыбранное время: ${selectedDate.toLocaleString()}`
       };
 
-      console.log("\n%j", mailMessage);
+//        console.log("\n%j", mailMessage);
 
-      /*
-      transporter.sendMail(message, (error, info) => {
+      transporter.sendMail(mailMessage, (error, info) => {
         if (error) {
           console.error('Error occurred');
           console.error(error.message);
           return;
         }
-        console.log('Message sent successfully!');
-        console.log('Server responded with "%s"', info.response);
+//         console.log('Message sent successfully!');
+//         console.log('Server responded with "%s"', info.response);
         transporter.close();
       });
-      */
 
     });
   });

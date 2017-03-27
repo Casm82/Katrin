@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", function () {
   var proceed = document.getElementById("proceed"); // кнопка продолжить
-  
+
   proceed.addEventListener("click", function () {
     var serviceDesc = document.getElementById("serviceDesc");
     var name = document.getElementById("name").value;
@@ -10,7 +10,7 @@ window.addEventListener("load", function () {
     var message = document.getElementById("message").value;
     var serviceId = serviceDesc.dataset.svcid;
     var selectedDate = serviceDesc.dataset.datesel;
-    
+
     if (name && tel) {
       var questionObj = { name, email, tel, message, serviceId, selectedDate };
       var req = new XMLHttpRequest();
@@ -32,7 +32,7 @@ window.addEventListener("load", function () {
           // показываем блок результата
           makeElmVisible(registerResult);
           // через 2 сек - прячем результат
-          setTimeout(function () { 
+          setTimeout(function () {
             makeElmInvisible(registerResult);
             window.location = "/";
           }, 2000);
@@ -44,7 +44,7 @@ window.addEventListener("load", function () {
       setTimeout(function () { makeElmInvisible(registerResult) }, 3000);
     };
   }, false);
-  
+
 }, false);
 
 // Вспомогательные функции показывают или прячут элемент
