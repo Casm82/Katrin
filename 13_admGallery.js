@@ -105,7 +105,6 @@ module.exports = (app, pool) => {
         };
       }
     ], (err) => {
-
       if (err)
         res.status(500).send(`Произошла ошибка при сохранении: ${err.message?err.message:"неизвестная ошибка"}`);
       else

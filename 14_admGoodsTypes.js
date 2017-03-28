@@ -9,13 +9,13 @@ function checkAuth(req, res, next){
 }
 
 module.exports = (app, pool) => {
-  app.get("/admin/serviceType", checkAuth, (req, res) => {
-    pool.query("SELECT * FROM service_type ORDER BY id", (err, result) => {
+  app.get("/admin/goodsTypes", checkAuth, (req, res) => {
+    pool.query("SELECT * FROM goods_types ORDER BY id", (err, result) => {
       let rows = result?result.rows:[];
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.render("admServiceTypes", {
+        res.render("admGoodsTypes", {
           "title"   : "Список категорий услуг",
           "rows"    : rows,
           "session" : req.session,
@@ -23,12 +23,12 @@ module.exports = (app, pool) => {
     });
   });
 
-  app.post("/admin/serviceType", checkAuth, (req, res) => {
+  app.post("/admin/goodsTypes", checkAuth, (req, res) => {
     let typesArray = req.body.typesArray;
     async.each(typesArray, (typeObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
       pool.query({
-        "text"   : "SELECT id FROM service_type WHERE id=$1",
+        "text"   : "SELECT id FROM goods_types WHERE id=$1",
         "values" : [typeObj.id]
       }, (err, result) => {
         let rows = result?result.rows:[];
@@ -36,19 +36,19 @@ module.exports = (app, pool) => {
           // есть в БД - обновляем или удаляем
           if (typeObj.delete) {
             pool.query({
-              "text"   : "DELETE FROM service_type WHERE id=$1",
+              "text"   : "DELETE FROM goods_types WHERE id=$1",
               "values" : [typeObj.id]
             }, (err) => { cbEach(err) });
           } else {
             pool.query({
-              "text"   : "UPDATE service_type SET name=$1 WHERE id=$2",
+              "text"   : "UPDATE goods_types SET name=$1 WHERE id=$2",
               "values" : [typeObj.name, typeObj.id]
             }, (err) => { cbEach(err) });
           };
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO service_type(name) VALUES ($1)",
+            "text"   : "INSERT INTO goods_types(name) VALUES ($1)",
             "values" : [typeObj.name]
           }, (err) => { cbEach(err) });
         };

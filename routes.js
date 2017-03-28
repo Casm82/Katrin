@@ -36,11 +36,13 @@ module.exports = (app) => {
   require("./05_question")(app, pool);
   require("./06_admin")(app, pool);
   require("./07_admServiceTypes")(app, pool);
-  require("./08_admServices")(app, pool);
+  require("./08_admServicesList")(app, pool);
   require("./09_admMasters")(app, pool);
   require("./10_admFeedback")(app, pool);
   require("./11_admQuestions")(app, pool);
   require("./12_admRequests")(app, pool);
   require("./13_admGallery")(app, pool);
+  require("./14_admGoodsTypes")(app, pool);
+  require("./15_admGoodsList")(app, pool);
 //   require("./04_price")(app, pool);
 };

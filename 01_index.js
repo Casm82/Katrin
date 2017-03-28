@@ -32,16 +32,28 @@ module.exports = (app, pool) => {
          pool.query("SELECT * FROM masters WHERE main_page=true ORDER BY id", (err, result) => {
           cbParallel(err, result?result.rows:[]);
          });
+      },
+      // Получаем информацию о категориях товаров
+      (cbParallel) => {
+         pool.query("SELECT * FROM goods_types ORDER BY id", (err, result) => {
+          cbParallel(err, result?result.rows:[]);
+         });
+      },
+      // Получаем информацию о товаров
+      (cbParallel) => {
+         pool.query("select id,name,type,photo from goods_list", (err, result) => {
+          cbParallel(err, result?result.rows:[]);
+         });
       }
       ], (err, result) => {
-
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
           let title = "Кэтрин";
           let feedbacks = result[0];
-          let masters = result[1];
-          res.render("index", { title, feedbacks, masters });
+          let masters   = result[1];
+          let goodsType = result[2];
+          res.render("index", { title, feedbacks, masters, goodsType });
         };
       }
     );

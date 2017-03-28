@@ -2,7 +2,7 @@ extends layout
 block css
   link(rel="stylesheet" type="text/css" href="/styles/admin.css")
 block scripts
-  script(src="/scripts/admServices.js")
+  script(src="/scripts/admGoodsList.js")
 block content
   body
     section
@@ -13,16 +13,16 @@ block content
       div.title= title
       div#menuButtons
         div
-          button#saveServices(type="button" title="Сохранить")
+          button#saveGoods(type="button" title="Сохранить")
             img(src="/images/save.png" alt="Сохранить")
         div
           button(type="reset" title="Отменить")
             img(src="/images/undo.png" alt="Отменить")
         div
-          button#newService(type="reset" title="Новая запись")
+          button#newGood(type="reset" title="Новая запись")
             img(src="/images/new.png" alt="Новая запись")
       div#board
         div#buttons
           each row in rows
-            div.svcButton(id="type-" + row.id)= row.name
-        div#serviceList
+            div.goodButton(id="type-" + row.id)= row.name
+        div#goodsList

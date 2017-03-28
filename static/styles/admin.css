@@ -13,7 +13,7 @@ section {
 }
 
 #buttonsNav {
-  width: 48em;
+  width: 66em;
   margin: 0 auto;
 }
 
@@ -36,7 +36,7 @@ section {
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-.svcButton {
+.svcButton, .goodButton {
   padding: 0.5em;
   margin: 0.5em;
   background-color: wheat;
@@ -46,7 +46,7 @@ section {
   text-align: center;
 }
 
-.svcButton:hover {
+.svcButton:hover, .goodButton:hover {
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
@@ -57,7 +57,6 @@ table {
 table, caption {
   margin: 0.5em auto;
 }
-
 
 td a {
   color: blue;
@@ -90,4 +89,13 @@ td {
 textarea {
   width: 20em;
   height: 3em;
+}
+
+.masterPhoto, .commodityPhoto {
+  float: left;
+  margin: 0.5em;
+}
+
+.masterPhoto div, .commodityPhoto div {
+  margin: 0.5em;
 }

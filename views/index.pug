@@ -84,25 +84,16 @@ block content
       input#submitFeedback(type="submit" value="Отправить")
     div#feedbackResult.invisible Спасибо за отзыв!
   section#goods
-    table#goodsTable
-      caption.title Товары
-      tr
-        th
-          a(href="/shop/organic" title="Товары Organic") Organic
-        th
-          a(href="/shop/matrix" title="Товары Matrix") Matrix
-        th
-          a(href="/shop/kapous" title="Товары Kapous") Kapous
-      tr
-        td
-          a(href="/shop/organic" title="Товары Organic")
-            img(src="/images/goods_organic.jpg")
-        td
-          a(href="/shop/matrix" title="Товары Matrix")
-            img(src="/images/goods_matrix.jpg")
-        td
-          a(href="/shop/kapous" title="Товары Kapous")
-            img(src="/images/goods_organic.jpg")
+    div#goodsGrid
+      each commodityType in goodsType
+        div.goodsPhoto
+          p
+            a(href="/shop/"+commodityType.id title=commodityType.name)
+              img(src="/images/goods/logo-"+commodityType.id+".png" width="256px" heigth="256px")
+          p
+            strong
+              a(href="/shop/"+commodityType.id title="Товары "+commodityType.name)= commodityType.name
+
   section#contacts
     div#address
       div.title Приходите

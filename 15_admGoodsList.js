@@ -10,50 +10,71 @@ function checkAuth(req, res, next){
 }
 
 module.exports = (app, pool) => {
-  app.get("/admin/masters", checkAuth, (req, res) => {
-    pool.query("SELECT * FROM masters ORDER BY id", (err, result) => {
+  app.get("/admin/goodsList", checkAuth, (req, res) => {
+    pool.query("SELECT * FROM goods_types ORDER BY id", (err, result) => {
+      let rows = result?result.rows:[];
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.render("admMasters", {
-          "title"   : "Мастера",
-          "rows"    : result?result.rows:[],
+        res.render("admGoodsList", {
+          "title"   : "Список товаров",
+          "rows"    : rows,
           "session" : req.session,
         });
     });
   });
 
-  app.post("/admin/saveMasters", checkAuth, (req, res) => {
-    let mstArray = req.body;
-    async.each(mstArray, (mstObj, cbEach) => {
+  app.post("/admin/getGoodsList", checkAuth, (req, res) => {
+    let goodTypeId = req.body.goodTypeId?req.body.goodTypeId.toString().replace(/\D/g,""):null;
+    if (goodTypeId) {
+      pool.query({
+        "text"   : "SELECT * FROM goods_list WHERE type=$1 ORDER BY id",
+        "values" : [goodTypeId]
+      }, (err, result) => {
+        let rows = result?result.rows:[];
+        if (err)
+          res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
+        else
+          res.render("elmListGoods", {"title": "Список товаров", "rows": rows, "goodType": goodTypeId});
+      });
+    } else {
+      res.status(500).send("Не указан id сервиса");
+    };
+  });
+
+  app.post("/admin/saveGoodsList", checkAuth, (req, res) => {
+    let goodTypeId = req.body.goodTypeId;
+    let goodArray = req.body.goodArray;
+    async.each(goodArray, (goodObj, cbEach) => {
       // Определяем запись новая или уже есть в БД
       pool.query({
-        "text"   : "SELECT id FROM masters WHERE id=$1",
-        "values" : [mstObj.id]
+        "text"   : "SELECT id FROM goods_list WHERE id=$1",
+        "values" : [goodObj.id]
       }, (err, result) => {
         let rows = result?result.rows:[];
         if (rows&&rows.length) {
           // есть в БД - обновляем или удаляем
-          if (mstObj.delete) {
+          if (goodObj.delete) {
             pool.query({
-              "text"   : "DELETE FROM masters WHERE id=$1",
-              "values" : [mstObj.id]
+              "text"   : "DELETE FROM goods_list WHERE id=$1",
+              "values" : [goodObj.id]
             }, (err) => { cbEach(err) });
           } else {
             pool.query({
-              "text"   : "UPDATE masters SET name=$1,title=$2,email=$3,notify=$4,main_page=$5,tel=$6 WHERE id=$7",
-              "values" : [mstObj.name, mstObj.title, mstObj.email, mstObj.notify, mstObj.main_page, mstObj.tel, mstObj.id]
+              "text"   : "UPDATE goods_list SET name=$1,description=$2,bulk=$3,price=$4 WHERE id=$5",
+              "values" : [goodObj.name, goodObj.description, goodObj.bulk, goodObj.price, goodObj.id]
             }, (err) => { cbEach(err) });
           };
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO masters(name, title, email, notify, main_page, tel) VALUES ($1, $2, $3, $4, $5)",
-            "values" : [mstObj.name, mstObj.title, mstObj.email, mstObj.notify, mstObj.main_page, mstObj.tel]
+            "text"   : "INSERT INTO goods_list(type,name,description,bulk,price) VALUES ($1, $2, $3, $4, $5)",
+            "values" : [goodTypeId, goodObj.name, goodObj.description, goodObj.bulk, goodObj.price]
           }, (err) => { cbEach(err) });
         };
       });
     }, (err) => {
+
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
@@ -61,20 +82,20 @@ module.exports = (app, pool) => {
     });
   });
 
-  app.get("/admin/masterPhoto/:id", checkAuth, (req, res) => {
-    let masterId = req.params.id;
-    if (masterId) {
+  app.get("/admin/goodsPhoto/:id", checkAuth, (req, res) => {
+    let commodityId = req.params.id;
+    if (commodityId) {
       pool.query({
-        "text"   : "SELECT id,name,photo FROM masters WHERE id=$1",
-        "values" : [masterId]
+        "text"   : "SELECT id,name,photo FROM goods_list WHERE id=$1",
+        "values" : [commodityId]
       }, (err, result) => {
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
-          let masterObj = (result.rows&&result.rows.length)?result.rows[0]:{};
-          res.render("admMasterPhoto", {
-            "masterObj" : masterObj,
-            "session"   : req.session,
+          let commodityObj = (result.rows&&result.rows.length)?result.rows[0]:{};
+          res.render("admGoodsPhoto", {
+            "commodityObj" : commodityObj,
+            "session"      : req.session,
           });
         };
       });
@@ -83,8 +104,8 @@ module.exports = (app, pool) => {
     };
   });
 
-  app.post("/admin/masterPhoto", checkAuth, (req, res) => {
-    let masterId = req.body.masterId;
+  app.post("/admin/goodsPhoto", checkAuth, (req, res) => {
+    let commodityId = req.body.commodityId;
     let deleteId = req.body.delete;
     let fileName;
     let fileExt;
@@ -92,8 +113,8 @@ module.exports = (app, pool) => {
 
     if (req.files&&req.files.workImg) {
       fileExt = req.files.workImg.mimetype.split("/")[1];
-      fileName = `${masterId}.${fileExt}`;
-      filePath = path.join(__dirname, "static", "images", "masters", fileName);
+      fileName = `${commodityId}.${fileExt}`;
+      filePath = path.join(__dirname, "static", "images", "goods", fileName);
     };
 
     async.parallel([
@@ -112,8 +133,8 @@ module.exports = (app, pool) => {
 
         if (fileName) {
           let photoSave = {
-            "text"   : "UPDATE masters SET photo=$1 WHERE id=$2",
-            "values" : [fileName, masterId]
+            "text"   : "UPDATE goods_list SET photo=$1 WHERE id=$2",
+            "values" : [fileName, commodityId]
           };
 
           pool.query(photoSave, (err) => {
@@ -128,8 +149,9 @@ module.exports = (app, pool) => {
       if (err)
         res.status(500).send(`Произошла ошибка при сохранении: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.redirect(`/admin/masterPhoto/${masterId}`);
+        res.redirect(`/admin/goodsPhoto/${commodityId}`);
     });
   });
+
 
 };

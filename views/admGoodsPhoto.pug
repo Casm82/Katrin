@@ -1,0 +1,28 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block content
+  body
+    section
+      div#back
+        a(href="/admin/goodsList" title="На страницу администрирования" rel="prev")
+          img(src="/images/back.png" alt="назад")
+          span Назад
+      div#board
+        form(id="uploadImg" action="/admin/goodsPhoto" method="POST" enctype="multipart/form-data")
+        input(form="uploadImg" type="hidden" name="commodityId" value=commodityObj.id)
+        div.commodityPhoto
+          div
+            strong= commodityObj.name
+          div
+            input(form="uploadImg" type="file" name="workImg")
+          div
+            input(form="uploadImg" type="checkbox" name="delete" value=commodityObj.id)
+            span Удалить
+          div
+            input(type="submit" form="uploadImg" title="Сохранить" value="Сохранить")
+        div.commodityPhoto
+          if (commodityObj.photo)
+            img(src="/images/goods/" + commodityObj.photo)
+          else
+            img(src="/images/goods/blank.png")

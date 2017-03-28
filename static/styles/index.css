@@ -284,14 +284,15 @@ nav li {
   font-style: italic;
 }
 
-#goodsTable {
-  width: 980px;
-  background: inherit;
+#goodsGrid {
   margin: 0 auto;
+  width: 868px;
+}
+
+.goodsPhoto {
+  display: inline-block;
+  margin: 0 1em;
   text-align: center;
-  border-spacing: 1em 0;
-  font-family: sans-serif;
-  font-size: 1.15em;
 }
 
 #reviewsTable {
@@ -323,27 +324,6 @@ nav li {
 #feedbackShow:hover {
   background-color: grey;
   color: #FAB89D;
-}
-
-#goodsTable {
-  border-spacing: 1em 0;
-}
-
-#goodsTable th {
-  background-color: white;
-  padding: 2em 0;
-}
-
-#goodsTable a {
-  text-shadow: 1px 1px 1px grey;
-  font-variant: small-caps;
-  font-size: 45px;
-  font-style: italic;
-  font-weight: lighter;
-}
-
-#goodsTable a:hover {
-  color: #FAEECD;
 }
 
 #address {

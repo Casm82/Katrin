@@ -1,0 +1,25 @@
+extends layout
+block css
+  link(rel="stylesheet" type="text/css" href="/styles/admin.css")
+block content
+  body
+    section
+      div#back
+        a(href="/admin/masters" title="На страницу администрирования" rel="prev")
+          img(src="/images/back.png" alt="назад")
+          span Назад
+      div#board
+        form(id="uploadImg" action="/admin/masterPhoto" method="POST" enctype="multipart/form-data")
+        input(form="uploadImg" type="hidden" name="masterId" value=masterObj.id)
+        div.masterPhoto
+          img(src="/images/masters/" + masterObj.photo)
+        div.masterPhoto
+          div
+            strong= masterObj.name
+          div
+            input(form="uploadImg" type="file" name="workImg")
+          div
+            input(form="uploadImg" type="checkbox" name="delete" value=masterObj.id)
+            span Удалить
+          div
+            input(type="submit" form="uploadImg" title="Сохранить" value="Сохранить")

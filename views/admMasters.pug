@@ -52,7 +52,8 @@ block content
             each row in rows
               tr(id="mst-" + row.id)
                 td
-                  img(src="/images/masters/" + row.photo alt="фотография" width="92" heigth="92")
+                  a(href="/admin/masterPhoto/"+row.id)
+                    img(src="/images/masters/" + row.photo alt="фотография" width="92" heigth="92")
                 td
                   input(value=row.name name="name" size="20")
                   input(value=row.title name="title" size="20")

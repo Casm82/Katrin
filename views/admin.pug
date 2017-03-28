@@ -17,13 +17,16 @@ block content
             div.svcButton Типы услуг
           a(href="/admin/services")
             div.svcButton Список услуг
+          a(href="/admin/goodsTypes")
+            div.svcButton Типы товаров
+          a(href="/admin/goodsList")
+            div.svcButton Список товаров
           a(href="/admin/masters")
             div.svcButton Список мастеров
           a(href="/admin/feedbacks")
             div.svcButton Отзывы
           a(href="/admin/questions")
             div.svcButton Вопросы
-
         div#lastRequests
           if (requests.length)
             table
@@ -31,17 +34,19 @@ block content
                 strong Список заявок
               tr
                 th Время записи
+                th Услуга
                 th Отправитель
-                th E-mail
                 th Телефон
+                th E-mail
                 th Сообщение
               each row in requests
                 tr(id=row.id)
                   td= row.selecteddate.toLocaleString()
-                  td= row.name
+                  td= row.service
+                  td= row.sender
+                  td= row.tel
                   td
                     a(href="mailto:" + row.email)= row.email
-                  td= row.tel
                   td= row.message
           else
             p Список заявок пуст

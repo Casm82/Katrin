@@ -4,19 +4,21 @@ if (requests.length)
       strong Список заявок
     tr
       th Время записи
+      th Услуга
       th Отправитель
-      th E-mail
       th Телефон
+      th E-mail
       th Сообщение
       th Выполнено
       th Удалить
     each row in requests
       tr(id=row.id)
         td= row.selecteddate.toLocaleString()
-        td= row.name
+        td= row.service
+        td= row.sender
+        td= row.tel
         td
           a(href="mailto:" + row.email)= row.email
-        td= row.tel
         td= row.message
         td.center
           if (row.completed)

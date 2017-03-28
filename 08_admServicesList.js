@@ -1,5 +1,4 @@
 "use strict";
-
 var async = require("async");
 
 function checkAuth(req, res, next){
@@ -10,14 +9,13 @@ function checkAuth(req, res, next){
 }
 
 module.exports = (app, pool) => {
-  //////////////////////////////////////////////////////////////////////////////////////////
   app.get("/admin/services", checkAuth, (req, res) => {
     pool.query("SELECT * FROM service_type ORDER BY id", (err, result) => {
       let rows = result?result.rows:[];
       if (err)
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
       else
-        res.render("admServices", {
+        res.render("admServicesList", {
           "title"   : "Список услуг",
           "rows"    : rows,
           "session" : req.session,
@@ -29,14 +27,14 @@ module.exports = (app, pool) => {
     let svcTypeId = req.body.svcTypeId?req.body.svcTypeId.toString().replace(/\D/g,""):null;
     if (svcTypeId) {
       pool.query({
-        "text"   : "SELECT * FROM service_list WHERE type = $1 ORDER BY id",
+        "text"   : "SELECT * FROM service_list WHERE type=$1 ORDER BY id",
         "values" : [svcTypeId]
       }, (err, result) => {
         let rows = result?result.rows:[];
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
-          res.render("elmListServices", { "title": "Список услуг", "rows": rows, "svcType": svcTypeId });
+          res.render("elmListServices", {"title": "Список услуг", "rows": rows, "svcType": svcTypeId});
       });
     } else {
       res.status(500).send("Не указан id сервиса");

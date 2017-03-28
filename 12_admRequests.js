@@ -20,9 +20,9 @@ module.exports = (app, pool) => {
     let showCompleted = req.body.showCompleted?req.body.showCompleted:null;
     let sqlQuery;
     if (showCompleted)
-      sqlQuery = "SELECT * FROM requests ORDER BY selectedDate";
+      sqlQuery = "SELECT r.name as sender,s.name as service,r.email,r.tel,r.message,r.selecteddate,r.regdate,r.completed FROM requests r, service_list s WHERE r.serviceid=s.id ORDER BY selectedDate";
     else
-      sqlQuery = "SELECT * FROM requests WHERE completed=false ORDER BY selectedDate";
+      sqlQuery = "SELECT r.name as sender,s.name as service,r.email,r.tel,r.message,r.selecteddate,r.regdate,r.completed FROM requests r, service_list s WHERE r.serviceid=s.id AND r.completed=false ORDER BY selectedDate";
 
     pool.query(sqlQuery, (err, result) => {
       if (err)

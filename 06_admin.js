@@ -15,7 +15,7 @@ module.exports = (app, pool) => {
       async.parallel([
         // Список заявок
         (cbParallel) => {
-          pool.query("SELECT * FROM requests WHERE completed=false ORDER BY selectedDate",
+          pool.query("SELECT r.name as sender,s.name as service,r.email,r.tel,r.message,r.selecteddate,r.regdate,r.completed FROM requests r, service_list s WHERE r.serviceid=s.id AND r.completed=false ORDER BY selectedDate",
           (err, result) => {
             cbParallel(err, result?result.rows:[]);
           });
@@ -35,7 +35,6 @@ module.exports = (app, pool) => {
           });
         }
       ], (err, result) => {
-
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
