@@ -1,6 +1,9 @@
 "use strict";
 
 window.addEventListener("load", function () {
+  // Прописываем контактную почту через JS
+  document.getElementById("contactMail").innerHTML = "katrin-app@yandex.ru"
+
   // Навигация - текст
   var navTextItems = document.getElementsByClassName("navText");
   // Навигация - нажатие на текст
