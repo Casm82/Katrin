@@ -21,7 +21,7 @@ module.exports = (app, pool) => {
     let serviceType = req.body.serviceType?Number(req.body.serviceType.toString().replace(/\D/g,"")):null;
     if (serviceType) {
     let sqlQuery = {
-      "text"   : "SELECT id,name,duration,price FROM service_list WHERE type=$1",
+      "text"   : "SELECT id,type,name,duration,price FROM service_list WHERE type=$1",
       "values" : [serviceType]
     };
     pool.query(sqlQuery, (err, result) => {
@@ -38,7 +38,6 @@ module.exports = (app, pool) => {
             else
               servicesObj[row.type].push(serviceDesc);
           });
-          console.log(servicesObj);
           res.render("elmListServices", { servicesObj });
         };
       };

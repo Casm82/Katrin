@@ -1,38 +1,13 @@
 table
-  colgroup
-    col.col10
-    col.col20
-    col.col10
-    col.col10
-    col.col5
-  tbody#servicesTable
-    tr
-      th Название
-      th Описание
-      th Длительность, мин.
-      th Стоимость, руб.
-      th Удалить
-    tr(id="svc-0" hidden="hidden")
-      td
-        input(name="name")
-      td
-        textarea(name="description")
-      td.center
-        input.num(name="duration" type="number")
-      td.center
-        input.num(name="price" type="text")
-      td.center
-        input(type="checkbox" name="delete")
-    each row in rows
-      tr(id="svc-" + row.id)
+  each svcObj, type in servicesObj
+    each svc in svcObj
+      tr
+        td= svc.name
         td
-          input(value=row.name name="name")
+          span= svc.duration
+          span &nbspмин.
         td
-          textarea(name="description")=row.description
-        td.center
-          input.num(value=row.duration name="duration" type="number")
-        td.center
-          input.num(value=row.price name="price" type="text")
-        td.center
-          input(type="checkbox" name="delete")
-        
+          span= svc.price
+          span &nbspруб.
+        td.enroll
+          a(href="/enrollment/" + svc.id) Записаться

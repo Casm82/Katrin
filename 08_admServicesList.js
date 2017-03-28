@@ -34,7 +34,7 @@ module.exports = (app, pool) => {
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
-          res.render("elmListServices", {"title": "Список услуг", "rows": rows, "svcType": svcTypeId});
+          res.render("elmAdmListServices", {"title": "Список услуг", "rows": rows, "svcType": svcTypeId});
       });
     } else {
       res.status(500).send("Не указан id сервиса");
