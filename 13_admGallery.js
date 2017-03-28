@@ -80,8 +80,8 @@ module.exports = (app, pool) => {
       (cbParallel) => {
         if (req.files&&req.files.workImg) {
           let gallerySave = {
-            "text"   : "INSERT INTO gallery(masterid, filename) VALUES ($1, $2)",
-            "values" : [masterId, fileName]
+            "text"   : "INSERT INTO gallery(masterid, filename, created) VALUES ($1, $2, $3)",
+            "values" : [masterId, fileName, new Date()]
           };
           pool.query(gallerySave, (err) => {
             if (err) { console.error(err); console.error(gallerySave); };
