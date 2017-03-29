@@ -18,15 +18,9 @@ const config = {
 
 const pool = new Pool(config);
 
-pool.on('error', function(error, client) {
+pool.on("error", function(error, client) {
   console.error(error);
 });
-
-
-/*pool.on('connect', client => {
-  console.log("connected to db");
-})
-*/
 
 module.exports = (app) => {
   require("./01_index")(app, pool);
@@ -44,5 +38,4 @@ module.exports = (app) => {
   require("./13_admGallery")(app, pool);
   require("./14_admGoodsTypes")(app, pool);
   require("./15_admGoodsList")(app, pool);
-//   require("./04_price")(app, pool);
 };

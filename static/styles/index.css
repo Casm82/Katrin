@@ -361,17 +361,17 @@ nav li {
   position: relative;
   width: 25em;
   height: 6em;
-  margin: 0 auto;
+  margin: 1em auto;
 }
 
 #questionSender {
  position: absolute;
- left: 1em;
+ left: 0em;
 }
 
 #questionMessage {
   position: absolute;
-  right: 1em;
+  right: 0em;
 }
 
 #submitQuestion:hover {

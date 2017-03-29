@@ -17,18 +17,18 @@ section {
 }
 
 #goods {
-  width: 900px;
+  width: 1000px;
   margin: 0 auto;
   border-collapse: collapse;
 }
 
 #goods td {
-  vertical-align: top;
-  padding: 1em;
+  padding: 0.5em;
   border-bottom: 2px solid black;
 }
 
-.name, .price {
+.name, .num {
+  vertical-align: top;
   color: #5E5E5E;
   font: normal normal normal 22px/1.4em serif;
 }
@@ -36,4 +36,5 @@ section {
 .desc {
   font-style: italic;
   font-family: serif;
+  margin-top: 0.5em;
 }

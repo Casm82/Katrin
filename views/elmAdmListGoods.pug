@@ -1,0 +1,46 @@
+table
+  colgroup
+    col.col10
+    col.col20
+    col.col10
+    col.col10
+    col.col5
+  tbody#goodsTable
+    tr
+      th Название
+      th Фотография
+      th Описание
+      th Объём, мл.
+      th Стоимость, руб.
+      th Удалить
+    tr(id="good-0" hidden="hidden")
+      td фотография
+      td
+        input(name="name")
+      td
+        textarea(name="description")
+      td.center
+        input.num(name="bulk" type="number")
+      td.center
+        input.num(name="price" type="number")
+      td.center
+        input(type="checkbox" name="delete")
+    each row in rows
+      tr(id="good-" + row.id)
+        td
+          a(href="/admin/goodsPhoto/"+row.id)
+            if (row.photo)
+              img(src="/images/goods/" + row.photo alt="фотография" width="92" heigth="92")
+            else
+              span фотография
+        td
+          input(value=row.name name="name")
+        td
+          textarea(name="description")=row.description
+        td.center
+          input.num(value=row.bulk name="bulk" type="number")
+        td.center
+          input.num(value=row.price name="price" type="number")
+        td.center
+          input(type="checkbox" name="delete")
+

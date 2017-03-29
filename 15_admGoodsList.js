@@ -35,10 +35,10 @@ module.exports = (app, pool) => {
         if (err)
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         else
-          res.render("elmListGoods", {"title": "Список товаров", "rows": rows, "goodType": goodTypeId});
+          res.render("elmAdmListGoods", {"title": "Список товаров", "rows": rows, "goodType": goodTypeId});
       });
     } else {
-      res.status(500).send("Не указан id сервиса");
+      res.status(500).send("Не указан id группы товаров");
     };
   });
 
