@@ -59,6 +59,10 @@ input { padding: 0.25em; }
   color: white;
 }
 
+#board img {
+  margin-bottom: 1em;
+}
+
 footer {
   position: fixed;
   bottom: 0;
