@@ -29,10 +29,7 @@ table
       tr(id="good-" + row.id)
         td
           a(href="/admin/goodsPhoto/"+row.id)
-            if (row.photo)
-              img(src="/images/goods/" + row.photo alt="фотография" width="92" heigth="92")
-            else
-              span фотография
+            img(src="/img/goods/" + row.id alt="фотография" width="92" heigth="92")
         td
           input(value=row.name name="name")
         td

@@ -13,6 +13,10 @@ block content
         div#buttonsNav
           a(href="/admin/requests")
             div.svcButton Заявки
+          a(href="/admin/feedbacks")
+            div.svcButton Отзывы
+          a(href="/admin/questions")
+            div.svcButton Вопросы
           a(href="/admin/serviceType")
             div.svcButton Типы услуг
           a(href="/admin/services")
@@ -23,10 +27,6 @@ block content
             div.svcButton Список товаров
           a(href="/admin/masters")
             div.svcButton Сотрудники
-          a(href="/admin/feedbacks")
-            div.svcButton Отзывы
-          a(href="/admin/questions")
-            div.svcButton Вопросы
         div#lastRequests
           if (requests.length)
             table

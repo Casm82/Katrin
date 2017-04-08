@@ -5,7 +5,7 @@ module.exports = (app, pool) => {
     let goodTypeId = req.params.id;
     if (goodTypeId) {
       pool.query({
-        "text"   : "SELECT * FROM goods_list WHERE type=$1 ORDER BY id",
+        "text"   : "SELECT id,name,description,price,bulk FROM goods_list WHERE type=$1 ORDER BY id",
         "values" : [goodTypeId]
       }, (err, result) => {
         let rows = result?result.rows:[];
