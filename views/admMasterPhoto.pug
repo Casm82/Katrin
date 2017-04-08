@@ -12,7 +12,7 @@ block content
         form(id="uploadImg" action="/admin/masterPhoto" method="POST" enctype="multipart/form-data")
         input(form="uploadImg" type="hidden" name="masterId" value=masterObj.id)
         div.masterPhoto
-          img(src="/images/masters/" + masterObj.photo)
+          img(src="/img/master/" + masterObj.id)
         div.masterPhoto
           div
             strong= masterObj.name

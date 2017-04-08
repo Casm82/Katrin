@@ -38,4 +38,5 @@ module.exports = (app) => {
   require("./13_admGallery")(app, pool);
   require("./14_admGoodsTypes")(app, pool);
   require("./15_admGoodsList")(app, pool);
+  require("./16_imageDB.js")(app, pool);
 };

@@ -1,4 +1,6 @@
 "use strict";
+const path = require("path");
+const async = require("async");
 
 function checkAuth(req, res, next){
   if (req.session.user)
@@ -63,7 +65,7 @@ module.exports = (app, pool) => {
     let masterId = req.params.id;
     if (masterId) {
       pool.query({
-        "text"   : "SELECT id,name,img FROM masters WHERE id=$1",
+        "text"   : "SELECT id,name,photo FROM masters WHERE id=$1",
         "values" : [masterId]
       }, (err, result) => {
         if (err) {
@@ -72,7 +74,7 @@ module.exports = (app, pool) => {
           let masterObj = (result.rows&&result.rows.length)?result.rows[0]:{};
           res.render("admMasterPhoto", {
             "masterObj" : masterObj,
-            "session"   : req.session
+            "session"   : req.session,
           });
         };
       });
@@ -84,28 +86,50 @@ module.exports = (app, pool) => {
   app.post("/admin/masterPhoto", checkAuth, (req, res) => {
     let masterId = req.body.masterId;
     let deleteId = req.body.delete;
+    let fileName;
+    let fileExt;
+    let filePath;
 
-    if (req.files&&req.files.workImg&&req.files.workImg.data) {
-      let img = '\\x' + req.files.workImg.data.toString('hex');
-
-      let photoSave = {
-        "text"   : "UPDATE masters SET img=$1 WHERE id=$2",
-        "values" : [img, masterId]
-      };
-
-      pool.query(photoSave, (err) => {
-        if (err) {
-          console.error(err);
-          console.error(photoSave);
-          res.status(500).send(`Произошла ошибка при сохранении: ${err.message?err.message:"неизвестная ошибка"}`);
-        } else {
-          res.redirect(`/admin/masterPhoto/${masterId}`);
-        };
-      });
-
-    } else {
-      res.redirect(`/admin/masterPhoto/${masterId}`);
+    if (req.files&&req.files.workImg) {
+      fileExt = req.files.workImg.mimetype.split("/")[1];
+      fileName = `${masterId}.${fileExt}`;
+      filePath = path.join(__dirname, "static", "images", "masters", fileName);
     };
+
+    async.parallel([
+      // сохраняем файл
+      (cbParallel) => {
+        if (req.files&&req.files.workImg) {
+          let workImg = req.files.workImg;
+          workImg.mv(filePath, (err) => { cbParallel(err); });
+        } else {
+          cbParallel();
+        };
+      },
+      // записываем в базу информацию о файле
+      (cbParallel) => {
+        if (deleteId) fileName="blank.png";
+
+        if (fileName) {
+          let photoSave = {
+            "text"   : "UPDATE masters SET photo=$1 WHERE id=$2",
+            "values" : [fileName, masterId]
+          };
+
+          pool.query(photoSave, (err) => {
+            if (err) { console.error(err); console.error(photoSave); };
+            cbParallel(err);
+          });
+        } else {
+          cbParallel();
+        };
+      }
+    ], (err) => {
+      if (err)
+        res.status(500).send(`Произошла ошибка при сохранении: ${err.message?err.message:"неизвестная ошибка"}`);
+      else
+        res.redirect(`/admin/masterPhoto/${masterId}`);
+    });
   });
 
 };
