@@ -22,7 +22,4 @@ block content
           div
             input(type="submit" form="uploadImg" title="Сохранить" value="Сохранить")
         div.commodityPhoto
-          if (commodityObj.photo)
-            img(src="/images/goods/" + commodityObj.photo)
-          else
-            img(src="/images/goods/blank.png")
+          img(src="/img/goods/" + commodityObj.id)

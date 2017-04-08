@@ -1,11 +1,6 @@
 "use strict";
-
-function checkAuth(req, res, next){
-  if (req.session.user)
-    next();
-  else
-    res.status(401).redirect("/");
-}
+const async = require("async");
+const checkAuth = require("./checkAuth");
 
 module.exports = (app, pool) => {
   app.get("/admin/masters", checkAuth, (req, res) => {

@@ -9,7 +9,6 @@ block content
           img(src="/images/back.png" alt="назад")
           span Назад
       div.title
-        div= title
         div= masterObj.name
       div#menuButtons
         div
@@ -27,6 +26,6 @@ block content
             each row in galleryObj
               tr
                 td
-                  img(src="/images/gallery/" + row.filename width="667" heigth="337")
+                  img(src="/img/gallery/" + row.id width="667" heigth="337")
                 td
                   input(form="uploadImg" type="checkbox" name="delete" value=row.id)

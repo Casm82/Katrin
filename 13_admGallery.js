@@ -1,13 +1,7 @@
 "use strict";
-var async = require("async");
-var path = require("path");
-
-function checkAuth(req, res, next){
-  if (req.session.user)
-    next();
-  else
-    res.status(401).redirect("/");
-}
+const async = require("async");
+const path = require("path");
+const checkAuth = require("./checkAuth");
 
 module.exports = (app, pool) => {
   app.get("/admin/gallery/:masterId", checkAuth, (req, res) => {
@@ -16,7 +10,7 @@ module.exports = (app, pool) => {
       // информация о мастере
       (cbParallel) => {
         let masterInfo = {
-          "text"   : "SELECT * FROM masters WHERE id=$1",
+          "text"   : "SELECT id,name FROM masters WHERE id=$1",
           "values" : [masterId]
         };
         pool.query(masterInfo, (err, result) => {
@@ -27,7 +21,7 @@ module.exports = (app, pool) => {
       // список фотографий
       (cbParallel) => {
         let galleryList = {
-          "text"   : "SELECT id,filename FROM gallery WHERE masterId=$1 ORDER BY created DESC",
+          "text"   : "SELECT id FROM gallery WHERE masterId=$1 ORDER BY created DESC",
           "values" : [masterId]
         };
         pool.query(galleryList, (err, result) => { cbParallel(err, result?result.rows:[]) });
@@ -52,36 +46,20 @@ module.exports = (app, pool) => {
     let currDate = new Date();
     let masterId = req.body.masterId;
     let deleteArray = [];
-    let fileName;
-    let fileExt;
-    let filePath;
 
     if (req.body.delete) {
       deleteArray = Array.isArray(req.body.delete)?req.body.delete:[req.body.delete];
     };
 
-    if (req.files&&req.files.workImg) {
-      fileExt = req.files.workImg.mimetype.split("/")[1];
-      fileName = `${masterId}-${currDate.getTime()}.${fileExt}`;
-      filePath = path.join(__dirname, "static", "images", "gallery", fileName);
-    };
-
     async.parallel([
-      // сохраняем файл
-      (cbParallel) => {
-        if (req.files&&req.files.workImg) {
-          let workImg = req.files.workImg;
-          workImg.mv(filePath, (err) => { cbParallel(err); });
-        } else {
-          cbParallel();
-        };
-      },
       // записываем в базу информацию о файле
       (cbParallel) => {
-        if (req.files&&req.files.workImg) {
+        if (req.files&&req.files.workImg&&req.files.workImg.data) {
+          let img = '\\x' + req.files.workImg.data.toString('hex');
+
           let gallerySave = {
-            "text"   : "INSERT INTO gallery(masterid, filename, created) VALUES ($1, $2, $3)",
-            "values" : [masterId, fileName, new Date()]
+            "text"   : "INSERT INTO gallery(masterid, img, created) VALUES ($1, $2, $3)",
+            "values" : [masterId, img, new Date()]
           };
           pool.query(gallerySave, (err) => {
             if (err) { console.error(err); console.error(gallerySave); };

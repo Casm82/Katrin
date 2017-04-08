@@ -41,7 +41,7 @@ module.exports = (app, pool) => {
       },
       // Получаем информацию о товаров
       (cbParallel) => {
-         pool.query("select id,name,type,photo from goods_list", (err, result) => {
+         pool.query("select id,name,type from goods_list", (err, result) => {
           cbParallel(err, result?result.rows:[]);
          });
       }
@@ -76,7 +76,7 @@ module.exports = (app, pool) => {
       // список фотографий
       (cbParallel) => {
         let galleryList = {
-          "text"   : "SELECT id,filename FROM gallery WHERE masterid=$1 ORDER BY created DESC",
+          "text"   : "SELECT id FROM gallery WHERE masterid=$1 ORDER BY created DESC",
           "values" : [masterId]
         };
         pool.query(galleryList, (err, result) => { cbParallel(err, result?result.rows:[]) });

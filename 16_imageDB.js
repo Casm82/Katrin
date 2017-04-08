@@ -4,9 +4,15 @@ module.exports = (app, pool) => {
   app.get("/img/:table/:id", (req, res) => {
     let table = req.params.table;
     let rowId = req.params.id;
-    if (rowId) {
+    let dbTable;
+    switch (table) {
+      case "masters": dbTable = "masters"; break;
+      case "gallery": dbTable = "gallery"; break;
+      case "goods"  : dbTable = "goods_list"; break;
+    };
+    if (dbTable&&rowId) {
       pool.query({
-        "text"   : "SELECT id,img FROM masters WHERE id=$1",
+        "text"   : `SELECT id,img FROM ${dbTable} WHERE id=$1`,
         "values" : [rowId]
       }, (err, result) => {
         if (err) {
@@ -17,7 +23,7 @@ module.exports = (app, pool) => {
         };
       });
     } else {
-      res.status(500).send("Не указан id строки");
+      res.status(500).send("Недостаточно данных для выполнения запроса к БД");
     };
   });
 };

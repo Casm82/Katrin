@@ -1,13 +1,7 @@
 "use strict";
 const path = require("path");
 const async = require("async");
-
-function checkAuth(req, res, next){
-  if (req.session.user)
-    next();
-  else
-    res.status(401).redirect("/");
-}
+const checkAuth = require("./checkAuth");
 
 module.exports = (app, pool) => {
   app.get("/admin/goodsList", checkAuth, (req, res) => {
@@ -28,7 +22,7 @@ module.exports = (app, pool) => {
     let goodTypeId = req.body.goodTypeId?req.body.goodTypeId.toString().replace(/\D/g,""):null;
     if (goodTypeId) {
       pool.query({
-        "text"   : "SELECT * FROM goods_list WHERE type=$1 ORDER BY id",
+        "text"   : "SELECT id,name,description,price,bulk FROM goods_list WHERE type=$1 ORDER BY id",
         "values" : [goodTypeId]
       }, (err, result) => {
         let rows = result?result.rows:[];
@@ -86,7 +80,7 @@ module.exports = (app, pool) => {
     let commodityId = req.params.id;
     if (commodityId) {
       pool.query({
-        "text"   : "SELECT id,name,photo FROM goods_list WHERE id=$1",
+        "text"   : "SELECT id,name FROM goods_list WHERE id=$1",
         "values" : [commodityId]
       }, (err, result) => {
         if (err) {
@@ -107,34 +101,18 @@ module.exports = (app, pool) => {
   app.post("/admin/goodsPhoto", checkAuth, (req, res) => {
     let commodityId = req.body.commodityId;
     let deleteId = req.body.delete;
-    let fileName;
-    let fileExt;
-    let filePath;
-
-    if (req.files&&req.files.workImg) {
-      fileExt = req.files.workImg.mimetype.split("/")[1];
-      fileName = `${commodityId}.${fileExt}`;
-      filePath = path.join(__dirname, "static", "images", "goods", fileName);
-    };
 
     async.parallel([
-      // сохраняем файл
-      (cbParallel) => {
-        if (req.files&&req.files.workImg) {
-          let workImg = req.files.workImg;
-          workImg.mv(filePath, (err) => { cbParallel(err); });
-        } else {
-          cbParallel();
-        };
-      },
       // записываем в базу информацию о файле
       (cbParallel) => {
         if (deleteId) fileName="blank.png";
 
-        if (fileName) {
+        if (req.files&&req.files.workImg&&req.files.workImg.data) {
+          let img = '\\x' + req.files.workImg.data.toString('hex');
+
           let photoSave = {
-            "text"   : "UPDATE goods_list SET photo=$1 WHERE id=$2",
-            "values" : [fileName, commodityId]
+            "text"   : "UPDATE goods_list SET img=$1 WHERE id=$2",
+            "values" : [img, commodityId]
           };
 
           pool.query(photoSave, (err) => {
