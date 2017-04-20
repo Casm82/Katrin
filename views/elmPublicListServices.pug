@@ -1,0 +1,11 @@
+table
+  each svcObj, type in servicesObj
+    each svc in svcObj
+      tr
+        td= svc.name
+        td
+          span= svc.duration
+          span &nbspмин.
+        td
+          span= svc.price
+          span &nbspруб.

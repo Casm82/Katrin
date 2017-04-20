@@ -38,7 +38,7 @@ module.exports = (app, pool) => {
             else
               servicesObj[row.type].push(serviceDesc);
           });
-          res.render("elmListServices", { servicesObj });
+          res.render("elmEnrollListServices", { servicesObj });
         };
       };
     });

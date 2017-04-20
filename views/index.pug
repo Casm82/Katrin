@@ -31,21 +31,22 @@ block content
         a(href="/enrollment")
           div#enrollment Онлайн запись
   section#services
-    div#servicesGrid
-      div.sericeRow
-        div.sericePink Уход
-        div
-          img(src="/images/care.jpg")
-        div.sericeBlack Лицо
-        div
-          img(src="/images/face.jpg")
-      div.sericeRow
-        div
-          img(src="/images/hair.jpg")
-        div.sericeBlack Волосы
-        div
-          img(src="/images/nails.jpg")
-        div.sericePink Ногти
+    a(href="/serviceList")
+      div#servicesGrid
+        div.sericeRow
+          div.sericePink Уход
+          div
+            img(src="/images/care.jpg")
+          div.sericeBlack Лицо
+          div
+            img(src="/images/face.jpg")
+        div.sericeRow
+          div
+            img(src="/images/hair.jpg")
+          div.sericeBlack Волосы
+          div
+            img(src="/images/nails.jpg")
+          div.sericePink Ногти
   section#masters
     div#mastersGrid
       each master,idx in masters

@@ -47,22 +47,30 @@ module.exports = (app, pool) => {
       },
       // Получаем информацию о товаров
       (cbParallel) => {
-         pool.query("SELECT id,name,type FROM goods_list", (err, result) => {
+        pool.query("SELECT id,name,type FROM goods_list", (err, result) => {
           cbParallel(err, result?result.rows:[]);
-         });
+        });
+      },
+      // Получаем информацию о списках услуг
+      (cbParallel) => {
+        pool.query("SELECT * FROM service_type", (err, result) => {
+          cbParallel(err, result?result.rows:[]);
+        });
       }
       ], (err, result) => {
         if (err) {
           res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
         } else {
           let title = "Кэтрин";
-          let feedbacks = result[0];
-          let masters   = result[1];
+          let feedbacks   = result[0];
+          let masters     = result[1];
           let galleryImgs = result[2];
-          let goodsType = result[3];
+          let goodsType   = result[3];
+          let serviceType = result[4];
+
           let imgsCount = {};
           galleryImgs.forEach((row) => { imgsCount[row.masterid] = Number(row.count) });
-          res.render("index", { title, feedbacks, masters, imgsCount, goodsType });
+          res.render("index", { title, feedbacks, masters, imgsCount, goodsType, serviceType });
         };
       }
     );
@@ -92,7 +100,7 @@ module.exports = (app, pool) => {
       }
     ], (err, result) => {
 
-      let masterObj = result[0];
+      let masterObj  = result[0];
       let galleryObj = result[1];
       if (err) {
         res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
