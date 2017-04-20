@@ -33,6 +33,12 @@ module.exports = (app, pool) => {
           cbParallel(err, result?result.rows:[]);
          });
       },
+      // Получаем информацию о работах
+      (cbParallel) => {
+         pool.query("SELECT masterid,count(id) FROM gallery GROUP BY masterid;", (err, result) => {
+          cbParallel(err, result?result.rows:[]);
+         });
+      },
       // Получаем информацию о категориях товаров
       (cbParallel) => {
          pool.query("SELECT * FROM goods_types ORDER BY id", (err, result) => {
@@ -41,7 +47,7 @@ module.exports = (app, pool) => {
       },
       // Получаем информацию о товаров
       (cbParallel) => {
-         pool.query("select id,name,type from goods_list", (err, result) => {
+         pool.query("SELECT id,name,type FROM goods_list", (err, result) => {
           cbParallel(err, result?result.rows:[]);
          });
       }
@@ -52,8 +58,11 @@ module.exports = (app, pool) => {
           let title = "Кэтрин";
           let feedbacks = result[0];
           let masters   = result[1];
-          let goodsType = result[2];
-          res.render("index", { title, feedbacks, masters, goodsType });
+          let galleryImgs = result[2];
+          let goodsType = result[3];
+          let imgsCount = {};
+          galleryImgs.forEach((row) => { imgsCount[row.masterid] = Number(row.count) });
+          res.render("index", { title, feedbacks, masters, imgsCount, goodsType });
         };
       }
     );

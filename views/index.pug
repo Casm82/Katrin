@@ -58,7 +58,8 @@ block content
             div.masterHr
             div.masterTitle= master.title
             div.masterGalery
-              a(href="/gallery/" + master.id) Галерея работ
+              if (imgsCount[master.id])
+                a(href="/gallery/" + master.id) Галерея работ
   section#reviews
     div#reviewsTable
       div.title Отзывы
