@@ -27,7 +27,7 @@ function saveListFn() {
   var mstArray = [];
   for (var i=0; i<nameArray.length; i++) {
     var mstId = nameArray[i].parentElement.parentElement.id.replace(/\D/g,"");
-    if (mstId && mstId != "0") {
+    if ((nameArray[i].value || deleteArray[i].checked) && (mstId != "0")) {
       var mstObj = {
         "id"        : mstId,
         "name"      : nameArray[i].value,
@@ -49,7 +49,7 @@ function saveListFn() {
   req.send(JSON.stringify(mstArray));
   req.onreadystatechange = function() {
     if (req.readyState === 4) {
-      if (req.status === 200) window.location = "/admin";
+      if (req.status === 200) window.location = "/admin/masters";
       if (req.status === 401) window.location="/admin";
       if (req.status === 500) masterList.innerHTML = req.responseText;
     };

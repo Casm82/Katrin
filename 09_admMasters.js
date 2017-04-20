@@ -41,7 +41,7 @@ module.exports = (app, pool) => {
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO masters(name, title, email, notify, main_page, tel) VALUES ($1, $2, $3, $4, $5)",
+            "text"   : "INSERT INTO masters(name, title, email, notify, main_page, tel) VALUES ($1, $2, $3, $4, $5, $6)",
             "values" : [mstObj.name, mstObj.title, mstObj.email, mstObj.notify, mstObj.main_page, mstObj.tel]
           }, (err) => { cbEach(err) });
         };

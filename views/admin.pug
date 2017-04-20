@@ -10,23 +10,35 @@ block content
           span Назад
       div.title= title
       div#board
-        div#buttonsNav
-          a(href="/admin/requests")
-            div.svcButton Заявки
-          a(href="/admin/feedbacks")
-            div.svcButton Отзывы
-          a(href="/admin/questions")
-            div.svcButton Вопросы
-          a(href="/admin/serviceType")
-            div.svcButton Типы услуг
-          a(href="/admin/services")
-            div.svcButton Список услуг
-          a(href="/admin/goodsTypes")
-            div.svcButton Типы товаров
-          a(href="/admin/goodsList")
-            div.svcButton Список товаров
-          a(href="/admin/masters")
-            div.svcButton Сотрудники
+        table#buttonsNav
+          tr
+            td
+              a(href="/admin/clients")
+                div.svcButton Клиенты
+            td
+              a(href="/admin/requests")
+                div.svcButton Заявки
+            td
+              a(href="/admin/feedbacks")
+                div.svcButton Отзывы
+            td
+              a(href="/admin/questions")
+                div.svcButton Вопросы
+            td
+              a(href="/admin/serviceType")
+                div.svcButton Типы услуг
+            td
+              a(href="/admin/services")
+                div.svcButton Список услуг
+            td
+              a(href="/admin/goodsTypes")
+                div.svcButton Типы товаров
+            td
+              a(href="/admin/goodsList")
+                div.svcButton Список товаров
+            td
+              a(href="/admin/masters")
+                div.svcButton Сотрудники
         div#lastRequests
           if (requests.length)
             table

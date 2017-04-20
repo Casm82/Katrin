@@ -12,9 +12,13 @@ section {
   width: 1024px;
 }
 
-#buttonsNav {
-  width: 66em;
-  margin: 0 auto;
+#buttonsNav td {
+  border: none;
+  padding: 0;
+}
+
+#buttonsNav a {
+  color: black;
 }
 
 #menuButtons {
