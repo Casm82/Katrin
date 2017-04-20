@@ -151,20 +151,32 @@ module.exports = (app, pool) => {
     let regDate = new Date();
 
     async.parallel([
+      // Записываем запрос в БД
       (cbParallel) => {
-        // записываем запрос в БД
         let sqlQuery = {
           "text"   : "INSERT INTO requests (name,email,tel,message,serviceid,selecteddate,regdate) VALUES ($1, $2, $3, $4, $5, $6, $7)",
           "values" : [name, email, tel, message, serviceId, selectedDate, regDate]
         };
-
-        pool.query(sqlQuery, (err) => {
-          if (err) console.error(err);
-          if (err)
-            res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
-          else
-            res.status(200).send("ok");
-          cbParallel(err);
+        pool.query(sqlQuery, (err) => { cbParallel(err); });
+      },
+      // Записываем клиента в БД
+      (cbParallel) => {
+        pool.query({
+          "text"   : "SELECT id FROM clients WHERE name=$1 AND tel=$2",
+          "values" : [name, tel]
+        }, (err, result) => {
+          let rows = result?result.rows:[];
+          if (rows&&rows.length) {
+            // есть в БД - пропускаем сохранение
+            cbParallel(err);
+          } else {
+            // новая - вставляем
+            let sqlQuery = {
+              "text"   : "INSERT INTO clients (name,email,tel) VALUES ($1, $2, $3)",
+              "values" : [name, email, tel]
+            };
+            pool.query(sqlQuery, (err) => { cbParallel(err); });
+          };
         });
       },
       // Получаем список сотрудников для оповещения
@@ -183,8 +195,14 @@ module.exports = (app, pool) => {
         });
       }
     ], (err, result) => {
-      let emails = result[1];
-      let serviceObj = (result[2]&&result[2].length)?result[2][0]:{}; // выбранная услуга
+      if (err) console.error(err);
+      if (err)
+        res.status(500).send(`Произошла ошибка при обращении к базе данных: ${err.message?err.message:"неизвестная ошибка"}`);
+      else
+        res.status(200).send("ok");
+
+      let emails = result[2];
+      let serviceObj = (result[3]&&result[3].length)?result[3][0]:{}; // выбранная услуга
 
       // Отправляем оповещение сотрудникам по email
       let emailToArray = [];
