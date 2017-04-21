@@ -29,11 +29,14 @@ block content
               td
                 input(name="email" size="15")
               td
+                input(name="birthday" size="15")
+              td
                 input(type="checkbox" name="delete")
             tr
               th Имя
               th Телефон
               th E-mail
+              th День рождения
               th Удалить
             each row in rows
               tr(id="client-"+row.id)
@@ -43,5 +46,7 @@ block content
                   input(value=row.tel name="tel" size="10")
                 td
                   input(value=row.email name="email" size="15")
+                td
+                  input(value=row.birthday name="birthday" size="15")
                 td
                   input(type="checkbox" name="delete" value=row.id)

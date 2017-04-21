@@ -18,6 +18,7 @@ function saveListFn() {
   var nameArray = document.getElementsByName("name");
   var emailArray = document.getElementsByName("email");
   var telArray = document.getElementsByName("tel");
+  var birthdayArray = document.getElementsByName("birthday");
   var deleteArray = document.getElementsByName("delete");
 
   // Формируем список мастеров для сохранения
@@ -26,11 +27,12 @@ function saveListFn() {
     var clientId = nameArray[i].parentElement.parentElement.id.replace(/\D/g,"");
     if ((nameArray[i].value || deleteArray[i].checked) && (clientId != "0")) {
       var mstObj = {
-        "id"     : clientId,
-        "name"   : nameArray[i].value,
-        "email"  : emailArray[i].value,
-        "tel"    : telArray[i].value,
-        "delete" : deleteArray[i].checked
+        "id"       : clientId,
+        "name"     : nameArray[i].value,
+        "email"    : emailArray[i].value,
+        "tel"      : telArray[i].value,
+        "birthday" : birthdayArray[i].value,
+        "delete"   : deleteArray[i].checked
       };
       clientsArray.push(mstObj);
     };

@@ -35,15 +35,15 @@ module.exports = (app, pool) => {
             }, (err) => { cbEach(err) });
           } else {
             pool.query({
-              "text"   : "UPDATE clients SET name=$1,email=$2,tel=$3 WHERE id=$4",
-              "values" : [clientObj.name, clientObj.email, clientObj.tel, clientObj.id]
+              "text"   : "UPDATE clients SET name=$1,email=$2,tel=$3,birthday=$4 WHERE id=$5",
+              "values" : [clientObj.name, clientObj.email, clientObj.tel, clientObj.birthday, clientObj.id]
             }, (err) => { cbEach(err) });
           };
         } else {
           // новая - вставляем
           pool.query({
-            "text"   : "INSERT INTO clients(name, email, tel) VALUES ($1,$2,$3)",
-            "values" : [clientObj.name, clientObj.email, clientObj.tel]
+            "text"   : "INSERT INTO clients(name, email, tel, birthday) VALUES ($1,$2,$3,$4)",
+            "values" : [clientObj.name, clientObj.email, clientObj.tel, clientObj.birthday]
           }, (err) => { cbEach(err) });
         };
       });
