@@ -9,7 +9,7 @@ module.exports = (app, pool) => {
     let title = req.body.title?req.body.title.replace(/[^a-zA-Zа-яА-Я0-9 ]/g,""):null;
     let message = req.body.message?req.body.message.replace(/[^a-zA-Zа-яА-Я0-9 .,]/g,""):null;
     pool.query({
-      "text"   : "INSERT INTO (ts, name, email, tel, title, message) feedbacks VALUES ($1, $2, $3, $4, $5, $6)",
+      "text"   : "INSERT INTO feedbacks(ts, name, email, tel, title, message) VALUES ($1, $2, $3, $4, $5, $6)",
       "values" : [ new Date(), name, email, tel, title, message ]
       },
     (err) => {
